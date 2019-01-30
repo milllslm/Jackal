@@ -1,0 +1,38 @@
+/*Put CSS Code Here*/
+
+
+.bordered {
+	border: 1px solid black;
+	padding: 1%;
+	margin-left: 2%;
+}
+
+.small-text {
+	font-size: 75%;
+}
+
+.nav-padding {
+	margin-bottom: 2%;
+}
+
+.card {
+	width: 100%;
+	height: auto;
+}
+
+.side {
+	padding-left: 85%;
+}
+
+#place_button {
+	background-color: green;
+	color: white;
+}
+
+.hidden {
+	visibility: hidden;
+}
+
+.clickable {
+	cursor: pointer;
+}

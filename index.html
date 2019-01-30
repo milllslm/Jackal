@@ -1,0 +1,181 @@
+<!-- Demo Wireframe using HTML, CSS, and some Javascript to display some of the features. 
+     We made this to have something to demo while we were learning React. All frontend code
+     moving forward will be re-written in React.
+  -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/css/base.css">
+    <title>YouBet</title>
+</head>
+<body>
+ <!-- Demo features hardcoded in while we are setting up React 
+      We haven't set up the back end yet. That is our next sprint
+  -->
+  <script>
+
+  function clickHandler(ev) {
+      let div = document.getElementById("hidden-div")
+      div.classList.remove("hidden");
+
+  };
+  function clickHandler2(ev) {
+      let message = document.getElementById("verify-string");
+      message.innerHTML = "2 / 3"
+  };
+
+
+</script>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-static-top nav-padding">
+    <h2>YouBet</h2>
+    <span class="navbar-right side">
+      <a id="loginLink" href="/">Settings</a><br>
+      <a id="regLink" href="/">Logout</a>
+    </span>
+</nav>
+<div class="row">
+
+    <div class="col-sm-2 bordered">
+        <h4 class="text-center">Josh</h4>
+        <hr>
+        <p align="center"><b> 540.10 coins </b></p>
+        <p>Past 24hr: +2.50 </p>
+        <p>Past Week: -15.70 </p>
+        <p>Past Month: +150.70 </p>
+        <br><br>
+
+        <img class="card" src="images/exGraph.jpg">
+
+    </div>
+    <div class="col-sm-6">
+        <div class="row">
+            <div align="center" class="col-sm-2 offset-sm-3"><button type="button" class="btn btn-outline-success">Global</button></div>
+            <div align="center" class="col-sm-2"><button type="button" class="btn btn-outline-danger">Location</button></div>
+            <div align="center" class="col-sm-2"><button type="button" class="btn btn-outline-warning">Groups</button></div>
+        </div>
+        <br>
+        <table class="table table-hover">
+                    <thead>
+                        <tr>
+                          <th scope="col" class="text-center">Bet</th>
+                          <th scope="col" class="text-center">Offer</th>
+                          <th scope="col" class="text-center">Duration</th>
+                          <th scope="col" class="text-center">Verifiers</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <span>
+                        <tr>
+                          <td class="text-center small-text">Sachit will be late to this class.</td>
+                          <td class="text-center small-text">5 coins<br><span class="clickable" style="color: green; font-weight: bold">Accept?</span></td>
+                          <td class="text-center small-text">2m to Accept <br> 25m til Decision</td>
+                          <td class="text-center small-text" id="verify-string" onclick="clickHandler2(event)">1 / 3
+                            <br><span class="clickable" style="color: green; font-weight: bold">Verify?</span>
+                          </td>
+                        </tr>
+                      </span>
+                        <tr>
+                          <td class="text-center small-text">Luke's computer will die during class.</td>
+                          <td class="text-center small-text">3 coins<br><span class="clickable" style="color: green; font-weight: bold">Accept?</span>
+                          </td>
+                          <td class="text-center small-text">20m to Accept <br> 74m til Decision</td>
+                          <td class="text-center small-text">0 / 1<br><span class="clickable" style="color: green; font-weight: bold">Verify?</span>
+                          </td>
+                        </tr>
+                         <tr id="hidden-div" class="hidden">
+                          <td class="text-center small-text">Vandy BBall will make SC top 10. </td>
+                          <td class="text-center small-text">10 coins</td>
+                          <td class="text-center small-text">1d to Accept<br>6w til Decision</td>
+                          <td class="text-center small-text">0 / 3</td>
+                        </tr>
+
+                    </tbody>
+                </table><br><br>
+                <div align="center">
+                    <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#formModal">Create</button>
+                </div>
+    </div>
+
+    <div class="col-sm-3 bordered">
+        <h4 class="text-center">Groups</h4>
+        <hr>
+    </div>
+</div>
+
+<!-- Modal for the Form -->
+<div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="formModalLabel">Make a bet</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>  
+          <div class="row form-field">
+            <div class="col-sm-3">
+              <label for="bet" class="col-form-label"><p>Bet:</p></label>
+            </div>
+            <div class="col-sm-9">
+              <input name="bet" id="bet" class="form-control" type="text" placeholder="Enter a description of your bet">
+            </div>
+          </div>
+          <div class="row form-field">
+            <div class="col-sm-3">
+              <label for="offer" class="col-form-label"><p>Offer:</p></label>
+            </div>
+            <div class="col-sm-9">
+              <input name="offer" id="offer" class="form-control" type="text" placeholder="Coins to wage">
+            </div>
+          </div>
+          <div class="row form-field">
+            <div class="col-sm-3">
+              <label for="duration" class="col-form-label"><p>Deadline to Accept:</p></label>
+            </div>
+            <div class="col-sm-9">
+              <input name="duration" id="duration" class="form-control" type="text" placeholder="">
+            </div>
+          </div>
+          <div class="row form-field">
+            <div class="col-sm-3">
+              <label for="duration-end" class="col-form-label"><p>Time til Verifying Voting is live:</p></label>
+            </div>
+            <div class="col-sm-9">
+              <input name="duration-end" id="duration-end" class="form-control" type="text" placeholder="">
+            </div>
+          </div>  
+          <div class="row form-field">
+            <div class="col-sm-3">
+              <label for="verifiers" class="col-form-label"><p>Verifiers Required</p></label>
+            </div>
+            <div class="col-sm-9">
+              <input name="verifiers" id="verifiers" class="form-control" type="number" placeholder="">
+            </div>
+          </div>  
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="place_button" onclick="clickHandler(event)" data-dismiss="modal" aria-label="Close">Place</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</body>
+
+
+
+</html>
