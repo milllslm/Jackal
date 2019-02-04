@@ -19,3 +19,6 @@ The non-technical challenges:
 - Getting trial users to use our platform.
 - Finding a way to incentivize verifiers.
 - Keeping users entertained without using real money.
+
+
+Trello: https://trello.com/b/4pa0fT3g/youbet-https-githubcom-milllslm-bettingapp
