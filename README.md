@@ -19,3 +19,4 @@ The non-technical challenges:
 - Getting trial users to use our platform.
 - Finding a way to incentivize verifiers.
 - Keeping users entertained without using real money.
+

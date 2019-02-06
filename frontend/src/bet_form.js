@@ -38,7 +38,7 @@ export default class BetForm extends React.Component {
             <DialogContentText>
               <p><b>Title:</b> { this.props.row.title } </p>
               <p><b>Description:</b> { this.props.row.long_description }</p>
-              <p><b>Offer:</b> { this.props.row.bet }</p>
+              <p><b>Offer:</b> { this.props.row.bet } coins</p>
               <p><b>Deadline to Accept:</b> { this.props.row.time_accept }</p>
               <p><b>Verify Deadline:</b> { this.props.row.time_end }</p>
               <p><b>Verifiers:</b> { this.props.row.verifiers }</p>
