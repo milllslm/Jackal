@@ -13,8 +13,13 @@ import Amplify from "aws-amplify";
 import config from "./config";
 import Routes from "./Routes";
 import { BrowserRouter as Router } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { Nav, Navbar, NavItem } from "react-bootstrap";
+import "./index.css";
+import { LinkContainer } from "react-router-bootstrap";
 
-class App extends Component {
+
+class App extends React.Component {
   render() {
     return (
       <div className="App container">
@@ -25,6 +30,16 @@ class App extends Component {
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
+          <Navbar.Collapse>
+            <Nav pullRight>
+              <LinkContainer to="/signup">
+                <NavItem>Signup</NavItem>
+              </LinkContainer>
+              <LinkContainer to="/login">
+                <NavItem>Login</NavItem>
+              </LinkContainer>
+            </Nav>
+          </Navbar.Collapse>
         </Navbar>
         <Routes />
       </div>
@@ -62,7 +77,7 @@ Amplify.configure({
 });
 ReactDOM.render(
   <Router>
-    <BetTable />
+    <App />
   </Router>,
   document.getElementById("root")
 );
