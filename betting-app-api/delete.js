@@ -6,7 +6,7 @@ export async function main(event, context) {
     TableName: "betting",
     // 'Key' defines the partition key and sort key of the item to be removed
     // - 'userId': Identity Pool identity id of the authenticated user
-    // - 'noteId': path parameter
+    // - 'betId': path parameter
     Key: {
       userId: event.requestContext.identity.cognitoIdentityId,
       betId: event.pathParameters.id
