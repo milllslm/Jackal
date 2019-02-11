@@ -1,24 +1,21 @@
-# BettingApp
+# Jackal
 
-We are building a web platform for peer to peer betting using virtual coins. 
-- The inspiration for this project came from our passion for trying to predict the future. 
+We have pivoted our idea! We are now a want-to-rent platform! Almost every Vandy/college student is familiar with the feeling of not having the right outfit for a ridiculously-themed party. Rather than shooting in the dark at a thrift store, why not ask the greater Vanderbilt community if someone has just what you need? That's where we come in.
 
 The techical challenges for the projects are as follows: 
 
 - Maintaining a clean interface for users.
 - Allowing connectivity between users. 
-- Maintaining the balances of all accounts and handling transactions when bets have been finalized.
-- Maintaining and displaying betting history to users.
+- Providing a chat functionality for potential renter-rentee pairs.
+- Maintaining and displaying renting/renter history to users.
 - Communicating efficently between the clientside and serverside.
 - Creating intelligent datatable structures for our database.
 - Handling the many callback events that must happen with our database
+- Providing a method for payment (Venmo API)?
 
 The non-technical challenges:
 
 - Concisely explaining to users what our platform does.
 - Getting trial users to use our platform.
-- Finding a way to incentivize verifiers.
-- Keeping users entertained without using real money.
-
 
 Trello: https://trello.com/b/4pa0fT3g/youbet-https-githubcom-milllslm-bettingapp
