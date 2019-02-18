@@ -14,10 +14,16 @@ export async function main(event, context) {
     },
     // 'UpdateExpression' defines the attributes to be updated
     // 'ExpressionAttributeValues' defines the value in the update expression
-    UpdateExpression: "SET content = :content, attachment = :attachment", //TODO: change these to item and description fields
+    UpdateExpression: "SET title = :title, description = :description, rate = :rate, rateQualifier = :rateQualifier, maxDuration = :maxDuration, likeThisLink = :likeThisLink, expiration = :expiration, category = :category",
     ExpressionAttributeValues: {
-      ":attachment": data.attachment || null, //TODO: changes to description field
-      ":content": data.content || null // TODO: change to content field
+      ":title": data.title || null,
+      ":description": data.description || null,
+      ":rate": data.rate || null,
+      ":rateQualifier": data.rateQualifier || null,
+      ":maxDuration": data.maxDuration || null,
+      ":likeThisLink": data.likeThisLink || null,
+      ":expiration": data.expiration || null,
+      ":category": data.category || null,
     },
     // 'ReturnValues' specifies if and how to return the item's attributes,
     // where ALL_NEW returns all attributes of the item after the update; you
