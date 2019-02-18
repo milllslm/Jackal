@@ -19,3 +19,5 @@ The non-technical challenges:
 - Getting trial users to use our platform.
 
 Trello: https://trello.com/b/4pa0fT3g/youbet-https-githubcom-milllslm-bettingapp
+
+Sprint 2 Demo Slides: https://docs.google.com/presentation/d/10QsJavrWhTkOa_NFKWnWtab8ujvPXU70QulBPLGYz74/edit?usp=sharing
