@@ -9,11 +9,16 @@ export async function main(event, context) {
     Item: {
       userId: event.requestContext.identity.cognitoIdentityId,
       betId: uuid.v1(),
-      content: data.content, //item name/title
-      attachment: data.attachment, //description
+      title: data.title,
+      description: data.description,
+      category: data.category,
+      rate: data.rate,
+      rateQualifier: data.rateQualifier,
+      maxDuration: data.maxDuration,
+      likeThisLink: data.likeThisLink,
+      expiration: data.expiration,
       createdAt: Date.now()
-      //category
-      
+
     }
   };
 
