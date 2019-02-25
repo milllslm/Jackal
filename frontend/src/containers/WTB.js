@@ -30,14 +30,13 @@ const styles = theme => ({
   controls: {
     display: 'flex',
     alignItems: 'center',
-    paddingLeft: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit,
+    paddingLeft: theme.spacing.unit/2,
+    paddingBottom: theme.spacing.unit/2,
   },
 });
 
 function WTB_Card(props) {
   const { classes, theme } = props;
-  console.log(props.data);
   return (
     <Card className={classes.card}>
       <div className={classes.details}>
@@ -46,23 +45,29 @@ function WTB_Card(props) {
           {props.data.title}
           </Typography>
           <Typography variant="h6" color="textSecondary">
+            {props.data.description}
+          </Typography>
+          <Typography variant="h6" color="textSecondary">
             Rate: ${props.data.rate} per {props.data.rateQualifier}
           </Typography>
           <Typography variant="h6" color="textSecondary">
-            {props.data.description}
+            Will need for: {props.data.maxDuration}
           </Typography>
           <Typography variant="h6" color="textSecondary">
             {props.data.category}
           </Typography>
+          <Typography variant="h6" color="textSecondary">
+            <a href={props.data.likeThisLink}>Like This</a>
+          </Typography>
         </CardContent>
         <div className={classes.controls}>
-          <IconButton aria-label="Previous">
+          <IconButton>
             <ChatIcon />
           </IconButton>
-          <IconButton aria-label="Play/pause">
+          <IconButton>
             <ExpandIcon  />
           </IconButton>
-          <IconButton aria-label="Next">
+          <IconButton>
             <CheckedIcon />
           </IconButton>
         </div>

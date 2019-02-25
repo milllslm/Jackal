@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { API } from "aws-amplify";
 import WTB_Card from "./WTB.js"
+import Grid from '@material-ui/core/Grid';
+
 
 import "./Home.css";
 
@@ -31,8 +33,6 @@ export default class Home extends Component {
     } catch (error) {
         console.log(error);
     }
-    
-
   }
 
   componentDidMount() {
@@ -53,9 +53,9 @@ export default class Home extends Component {
         expiration: this.state.expiration
       });
       this.props.history.push("/");
-      console.log("success");
-      this.forceUpdate();
+      console.log("Request submitted successfully");
     } catch (error) {
+      console.log("Problem with request");
       console.log(error);
     }
   }
@@ -80,15 +80,21 @@ export default class Home extends Component {
   render() {
     return (
       <div>
-         <button onClick={this.handleSubmit}>Add New Offer</button>
          <div>
+         <Grid container spacing={12}>
          {this.state.wtbs.map(wtb => (
-              <WTB_Card data={wtb} key={wtb.title} />
+              <Grid item xs={12} sm={6} md={3}>
+              <WTB_Card data={wtb} key={wtb.betId} />
+              </Grid>
             ))}
+         </Grid>
          </div>
      </div>
     );
   }
 }
+
+//          <button onClick={this.handleSubmit}>Add New Offer</button>
+
 
 
