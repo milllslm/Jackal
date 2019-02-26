@@ -15,7 +15,7 @@ import { LinkContainer } from "react-router-bootstrap";
 class App extends React.Component {
   render() {
     return (
-      <div className="App container">
+      <div>
         <Navbar fluid collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>

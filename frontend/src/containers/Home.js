@@ -82,7 +82,6 @@ export default class Home extends Component {
   render() {
     return (
       <div>
-         <New_Button />
          <Grid container spacing={12}>
            <Grid item sm={4}>
            <UserProfile />

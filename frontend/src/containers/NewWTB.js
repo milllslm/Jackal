@@ -51,29 +51,30 @@ export default class WTB_Button extends Component {
 		const fields = ['title', ]
 		return (
 			<div>
+
 			<Dialog
           		open={this.state.open}
           		onClose={this.handleClickClose}
           		aria-labelledby="form-dialog-title"
           		fullWidth
         	>
-        	<DialogTitle id="max-width-dialog-title">Place a new request</DialogTitle>
-        	<DialogContent>
-	        	<TextField
-	              autoFocus
-	              margin="dense"
-	              id="title"
-	              label="Title"
-	              type="email"
-	              fullWidth
-	            />
+	        	<DialogTitle id="max-width-dialog-title">Place a new request</DialogTitle>
+	        	<DialogContent>
+		        	<TextField
+		              autoFocus
+		              margin="dense"
+		              id="title"
+		              label="Title"
+		              type="email"
+		              fullWidth
+		            />
 
-        	</DialogContent>
-        	<DialogActions>
-	            <Button onClick={this.handleClickClose} color="primary">
-	              Cancel
-	            </Button>
-            </DialogActions>
+	        	</DialogContent>
+	        	<DialogActions>
+		            <Button onClick={this.handleClickClose} color="primary">
+		              Cancel
+		            </Button>
+	            </DialogActions>
             </Dialog>
 				<Fab color="primary" aria-label="Add" onClick={this.handleClickOpen}>
         			<AddIcon />
