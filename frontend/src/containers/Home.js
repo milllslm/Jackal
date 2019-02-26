@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { API } from "aws-amplify";
 import WTB_Card from "./WTB.js"
 import Grid from '@material-ui/core/Grid';
-
+import New_Button from "./NewWTB";
 
 import "./Home.css";
 
@@ -80,7 +80,7 @@ export default class Home extends Component {
   render() {
     return (
       <div>
-         <div>
+         <New_Button />
          <Grid container spacing={12}>
          {this.state.wtbs.map(wtb => (
               <Grid item xs={12} sm={6} md={3}>
@@ -88,7 +88,6 @@ export default class Home extends Component {
               </Grid>
             ))}
          </Grid>
-         </div>
      </div>
     );
   }
