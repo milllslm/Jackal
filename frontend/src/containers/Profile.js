@@ -20,7 +20,6 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
-import New_Button from "./NewWTB";
 import AddWantToBuy from "./AddWTB"
 
 
@@ -79,7 +78,7 @@ class RecipeReviewCard extends React.Component {
       </div>
         <CardActions className={classes.actions} disableActionSpacing>
           <Fab color="primary" aria-label="Add" className={classes.fab}>
-             <New_Button/>
+             <AddWantToBuy/>
          </Fab>
 
         </CardActions>
