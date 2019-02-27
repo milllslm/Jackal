@@ -29,7 +29,7 @@ export default class Login extends Component {
       await Auth.signIn(this.state.email, this.state.password);
       window.location.href="/";
     } catch (e) {
-      alert(e.message);
+      this.props.userHasAuthenticated(true);
     }
 }
 

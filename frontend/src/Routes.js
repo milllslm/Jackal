@@ -4,12 +4,19 @@ import Home from "./containers/Home";
 import Login from "./containers/Login";
 import WTB_Card from "./containers/WTB";
 import ProfileCard from "./containers/Profile"
+import Signup from "./containers/Signup";
+import AppliedRoute from "./containers/AppliedRoute";
 
 
-export default () =>
+
+export default ({ childProps }) =>
   <Switch>
-    <Route path="/" exact component={Home} />
-    <Route path="/login" exact component={Login} />
-    <Route path="/wtb" exact component={WTB_Card} />
-    <Route path="/profile" exact component={ProfileCard} />
+    <AppliedRoute path="/" exact component={Home} props={childProps} />
+    <AppliedRoute path="/login" exact component={Login} props={childProps} />
+    <AppliedRoute path="/" exact component={Home} props={childProps} />
+    <AppliedRoute path="/login" exact component={Login} props={childProps} />
+    <AppliedRoute path="/wtb" exact component={WTB_Card} props={childProps} />
+    <AppliedRoute path="/profile" exact component={ProfileCard} props={childProps} />
+	<AppliedRoute path="/signup" exact component={Signup} props={childProps} />
   </Switch>;
+
