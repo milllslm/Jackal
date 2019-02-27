@@ -78,13 +78,10 @@ class RecipeReviewCard extends React.Component {
         </CardContent>
       </div>
         <CardActions className={classes.actions} disableActionSpacing>
-<<<<<<< HEAD
           <Fab color="primary" aria-label="Add" className={classes.fab}>
              <New_Button/>
          </Fab>
-=======
-          <AddWantToBuy />
->>>>>>> d1de7dc6ba2dc2efdf02eca9c195b79977b4acd7
+
         </CardActions>
         
       </Card>
