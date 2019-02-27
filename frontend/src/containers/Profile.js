@@ -20,41 +20,17 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
-
-
+import AddWantToBuy from "./AddWTB"
 
 
 
 const styles = theme => ({
   card: {
     maxWidth: 300,
-  },
-  media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
-  },
-  actions: {
-    display: 'flex',
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
-  },
-  button: {
-    margin: theme.spacing.unit,
-  },
-  bigAvatar: {
-    backgroundColor: red[500],
-    width: 130,
-    height: 130,
-    marginTop: 30
-  },
+    flex: 1,
+    height: "600",
+  }
+  
 });
 
 class RecipeReviewCard extends React.Component {
@@ -70,7 +46,7 @@ class RecipeReviewCard extends React.Component {
     return (
       <Card className={classes.card}>
       <div style= {{backgroundColor: "#4055B2"}} >
-       <Grid container justify = "center" >
+       <Grid container justify = "center" spacing={12}>
           <CardHeader style={{ textAlign: 'center' }}
             avatar={
                 <Avatar src="https://cdn.vanderbilt.edu/vu-wp0/wp-content/uploads/sites/79/2010/07/08163329/Chancellor-Zeppos-e1518107839268.jpg" className={classes.bigAvatar}>
@@ -79,10 +55,10 @@ class RecipeReviewCard extends React.Component {
             }
           />
           <div style={{ textAlign: 'center', color: "white"}}>
-            <h2 > Nicholas Zeppos </h2>
+            <Grid item spacing={12}><h3 > Nicholas Zeppos </h3></Grid>
           </div>
          <div style={{ textAlign: 'center', color: "white"}}>
-          <h3 > Branscomb </h3>
+          <Grid item spacing={12}><h4 > Branscomb </h4></Grid>
         </div>
          </Grid>
       </div>
@@ -100,9 +76,7 @@ class RecipeReviewCard extends React.Component {
         </CardContent>
       </div>
         <CardActions className={classes.actions} disableActionSpacing>
-          <Fab color="primary" aria-label="Add" className={classes.fab}>
-             <AddIcon />
-         </Fab>
+          <AddWantToBuy />
         </CardActions>
         
       </Card>
