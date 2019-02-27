@@ -1,12 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import Table from '@material-ui/core/Table';
-// import TableBody from '@material-ui/core/TableBody';
-// import TableCell from '@material-ui/core/TableCell';
-// import TableHead from '@material-ui/core/TableHead';
-// import TableRow from '@material-ui/core/TableRow';
-// import Button from '@material-ui/core/Button'
-// import BetForm from './bet_form.js'
 
 // All Needed for working with Server-less
 import Amplify from "aws-amplify";
@@ -22,11 +15,11 @@ import { LinkContainer } from "react-router-bootstrap";
 class App extends React.Component {
   render() {
     return (
-      <div className="App container">
+      <div>
         <Navbar fluid collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              <Link to="/">Scratch</Link>
+              <Link to="/">Jackal</Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>

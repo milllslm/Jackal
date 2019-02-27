@@ -27,7 +27,7 @@ export default class Login extends Component {
     event.preventDefault();
     try {
       await Auth.signIn(this.state.email, this.state.password);
-      alert("Logged in");
+      window.location.href="/";
     } catch (e) {
       alert(e.message);
     }
