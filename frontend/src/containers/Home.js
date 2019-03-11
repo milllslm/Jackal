@@ -35,6 +35,7 @@ export default class Home extends Component {
   render() {
     return (
       <div>
+        <h1>{this.state.category}</h1>
         <Grid container spacing={12}>
           <Grid item sm={3}>
             <UserProfile category={this.state.category} setCategory={this.setCategory} />

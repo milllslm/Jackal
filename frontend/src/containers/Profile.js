@@ -21,6 +21,15 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 import AddWantToBuy from "./AddWTB"
+import Paper from '@material-ui/core/Paper';
+import { IoMdTrophy } from "react-icons/io";
+import { IoLogoGameControllerB } from "react-icons/io";
+import { IoIosCash } from "react-icons/io";
+import Icon from '@material-ui/core/Icon';
+
+
+
+
 
 
 
@@ -30,12 +39,31 @@ const styles = theme => ({
     maxWidth: 300,
     flex: 1,
     height: "600",
-  }
+  },
+  categoryCard: {
+    maxWidth: 1000,
+    flex: 1,
+    height: "2000",
+  },
+   root: {
+    flexGrow: 1,
+  },
   
 });
 
 class RecipeReviewCard extends React.Component {
-  state = { expanded: false };
+  constructor(props){
+    super(props);
+    this.state = { expanded: false };
+    this.handleEvent = this.handleEvent.bind(this);
+    this.handleExpandClick = this.handleExpandClick.bind(this);
+  };
+
+  handleEvent(ev) {
+    console.log(ev.target.id);
+    let category = ev.target.id;
+    this.props.setCategory(category);
+  };
 
   handleExpandClick = () => {
     this.setState(state => ({ expanded: !state.expanded }));
@@ -59,30 +87,39 @@ class RecipeReviewCard extends React.Component {
             <Grid item spacing={12}><h3 > Nicholas Zeppos </h3></Grid>
           </div>
          <div style={{ textAlign: 'center', color: "white"}}>
-          <Grid item spacing={12}><h4 > Branscomb </h4></Grid>
+          <Grid item spacing={12}><h4 > Vanderbilt </h4></Grid>
         </div>
          </Grid>
       </div>
       <div style ={{ textAlign: 'center' }}>
         <CardContent>
-          <Button variant="outlined" className={classes.button} size = "large">
+          <Button key={4} variant="outlined" className={classes.button} size = "large">
               Profile
           </Button>
-          <Button variant="outlined" className={classes.button} size = "large">
+          <Button key={5} variant="outlined" className={classes.button} size = "large">
               Transactions
           </Button>
-          <Button variant="outlined" className={classes.button} size = "large">
+          <Button key={6} variant="outlined" className={classes.button} size = "large">
               Settings
           </Button>
         </CardContent>
       </div>
-        <CardActions className={classes.actions} disableActionSpacing>
-          <Fab color="primary" aria-label="Add" className={classes.fab}>
-             <AddWantToBuy/>
-         </Fab>
-
+        <Grid container spacing={24}>
+          <Grid item xs={3}>
+            <Button variant= "outlined" className= {classes.categoryCard} size = "large" onClick={this.handleEvent} id="Sports"> <IoMdTrophy /> Sports </Button>
+          </Grid>
+          <Grid item xs={3}>
+            <Button variant= "outlined" className= {classes.categoryCard} size = "large" onClick={this.handleEvent} id="VideoGames"> <IoLogoGameControllerB /> Video Games </Button>
+          </Grid>
+          <Grid item xs={3}>
+            <Button variant= "outlined" className= {classes.categoryCard} size = "large" onClick={this.handleEvent} id="Huh"> <IoIosCash /> Huh </Button>
+          </Grid>
+        </Grid>
+          <CardActions className={classes.actions} disableActionSpacing>
+            <Fab color="primary" aria-label="Add" className={classes.fab}>
+               <AddWantToBuy/>
+            </Fab>
         </CardActions>
-        
       </Card>
     );
   }
