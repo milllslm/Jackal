@@ -21,9 +21,21 @@ export default class Signup extends Component {
       confirmationCode: "",
       newUser: null
     };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.validateForm = this.validateForm.bind(this);
+    this.validateConfirmationForm = this.validateConfirmationForm.bind(this);
+    this.renderForm = this.renderForm.bind(this);
+    this.renderConfirmationForm = this.renderConfirmationForm.bind(this);
+
   }
 
   validateForm() {
+      console.log("6");
+              console.log(this.state);
+
+
     return (
       this.state.email.length > 0 &&
       this.state.password.length > 0 &&
@@ -41,21 +53,23 @@ export default class Signup extends Component {
     });
   }
 
- handleSubmit = async event => {
+handleSubmit = async event => {
   event.preventDefault();
 
   this.setState({ isLoading: true });
-
   try {
     const newUser = await Auth.signUp({
       username: this.state.email,
-      password: this.state.password
+      password: this.state.password,
+      attributes: {
+        email: this.state.email
+      }
     });
     this.setState({
-      newUser
+      newUser: newUser
     });
   } catch (e) {
-    alert(e.message);
+    console.log(e);
   }
 
   this.setState({ isLoading: false });
@@ -63,12 +77,14 @@ export default class Signup extends Component {
 
 handleConfirmationSubmit = async event => {
   event.preventDefault();
-
   this.setState({ isLoading: true });
 
   try {
     await Auth.confirmSignUp(this.state.email, this.state.confirmationCode);
     await Auth.signIn(this.state.email, this.state.password);
+      console.log("5");
+              console.log(this.state);
+
 
     this.props.userHasAuthenticated(true);
     this.props.history.push("/");
