@@ -24,8 +24,17 @@ import AddWantToBuy from "./AddWTB"
 import Paper from '@material-ui/core/Paper';
 import { IoMdTrophy } from "react-icons/io";
 import { IoLogoGameControllerB } from "react-icons/io";
-import { IoIosCash } from "react-icons/io";
+import { IoIosPower } from "react-icons/io";
+import { IoMdShirt } from "react-icons/io";
+import { IoIosUmbrella } from "react-icons/io";
+import { FaPiedPiperHat } from "react-icons/fa";
 import Icon from '@material-ui/core/Icon';
+import { IoIosCar } from "react-icons/io";
+import { MdRestaurant } from "react-icons/md";
+import Tooltip from '@material-ui/core/Tooltip';
+import { FaStarOfLife } from "react-icons/fa";
+
+
 
 
 
@@ -47,6 +56,12 @@ const styles = theme => ({
   },
    root: {
     flexGrow: 1,
+  },
+  fab: {
+    margin: theme.spacing.unit,
+  },
+  margin: {
+    margin: theme.spacing.unit,
   },
   
 });
@@ -93,28 +108,77 @@ class RecipeReviewCard extends React.Component {
       </div>
       <div style ={{ textAlign: 'center' }}>
         <CardContent>
-          <Button key={4} variant="outlined" className={classes.button} size = "large">
+        <Grid>
+          <Button key={4} variant="outlined" className={classes.margin} size = "large">
               Profile
           </Button>
-          <Button key={5} variant="outlined" className={classes.button} size = "large">
+        </Grid>
+        <Grid>
+          <Button key={5} variant="outlined" className={classes.margin} size = "large">
               Transactions
           </Button>
-          <Button key={6} variant="outlined" className={classes.button} size = "large">
+        </Grid>
+        <Grid>
+          <Button key={6} variant="outlined" className={classes.margin} size = "large">
               Settings
           </Button>
+        </Grid>
         </CardContent>
       </div>
-        <Grid container spacing={24}>
-          <Grid item xs={3}>
-            <Button variant= "outlined" className= {classes.categoryCard} size = "large" onClick={this.handleEvent} id="Sports"> <IoMdTrophy /> Sports </Button>
-          </Grid>
-          <Grid item xs={3}>
-            <Button variant= "outlined" className= {classes.categoryCard} size = "large" onClick={this.handleEvent} id="VideoGames"> <IoLogoGameControllerB /> Video Games </Button>
-          </Grid>
-          <Grid item xs={3}>
-            <Button variant= "outlined" className= {classes.categoryCard} size = "large" onClick={this.handleEvent} id="Huh"> <IoIosCash /> Huh </Button>
-          </Grid>
+      <div style ={{ textAlign: 'center', justifyContent: 'center' , alignItems: 'center'}}>
+        <Grid container spacing={12} justify="center">
+          <Tooltip title="Sports">
+          <Fab color="white" aria-label="Sports" id = "Sports" className={classes.fab} onClick={this.handleEvent}>
+            <IoMdTrophy size = "30" />
+          </Fab>
+          </Tooltip>
+          <Tooltip title = "Video Games">
+         <Fab color="white" aria-label="VideoGames" id = "VideoGames" className={classes.fab} onClick={this.handleEvent} >
+            <IoLogoGameControllerB size = "30" />
+         </Fab>
+         </Tooltip>
+         <Tooltip title = "Electronics">
+         <Fab color="white" aria-label="Electronics" id = "Electronics" className={classes.fab} onClick={this.handleEvent} >
+            <IoIosPower size = "30" />
+         </Fab>
+         </Tooltip>
         </Grid>
+        <Grid justify="center">
+        <Tooltip title = "Apparel">
+          <Fab color="white" aria-label="Apparel" id = "Apparel" className={classes.fab} onClick={this.handleEvent} >
+            <IoMdShirt size = "30" />
+         </Fab>
+         </Tooltip>
+         <Tooltip title = "Accessories">
+         <Fab color="white" aria-label="Accessories" id = "Accessories" className={classes.fab} onClick={this.handleEvent} >
+            <FaPiedPiperHat size = "30" />
+         </Fab>
+         </Tooltip>
+         <Tooltip title = "Transportation">
+         <Fab color="white" aria-label="Transportation" id = "Transportation" className={classes.fab} onClick={this.handleEvent} >
+            <IoIosCar size = "30" />
+         </Fab>
+         </Tooltip>
+        </Grid>
+        <Grid justify="center">
+        <Tooltip title = "Outdoors">
+          <Fab color="white" aria-label="Outdoor" id = "Outdoor" className={classes.fab} onClick={this.handleEvent} >
+            <IoIosUmbrella size = "30" />
+         </Fab>
+         </Tooltip>
+         <Tooltip title = "Food and Drink">
+         <Fab color="white" aria-label="Food and Drink" id = "Food and Drink" className={classes.fab} onClick={this.handleEvent} >
+            <MdRestaurant size = "30" />
+         </Fab>
+         </Tooltip>
+         <Tooltip title = "Miscellaneous">
+         <Fab color="white" aria-label="Miscellaneous" id = "Miscellaneous" className={classes.fab} onClick={this.handleEvent} >
+            <FaStarOfLife size = "30" />
+         </Fab>
+         </Tooltip>
+        </Grid>
+      </div>
+
           <CardActions className={classes.actions} disableActionSpacing>
             <Fab color="primary" aria-label="Add" className={classes.fab}>
                <AddWantToBuy/>
