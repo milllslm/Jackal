@@ -20,10 +20,6 @@ export default class Signup extends Component {
       confirmPassword: "",
       confirmationCode: "",
       newUser: null,
-      firstName: "",
-      lastName: "",
-      phone: ""
-
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -68,9 +64,6 @@ handleSubmit = async event => {
       attributes: {
         email: this.state.email
       },
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      phone: this.this.state.phone
     });
     this.setState({
       newUser: newUser
@@ -153,30 +146,6 @@ handleConfirmationSubmit = async event => {
             value={this.state.confirmPassword}
             onChange={this.handleChange}
             type="password"
-          />
-        </FormGroup>
-        <FormGroup controlId="firstName" bsSize="large">
-          <ControlLabel>First Name</ControlLabel>
-          <FormControl
-            value={this.state.firstName}
-            onChange={this.handleChange}
-            type="Name"
-          />
-        </FormGroup>
-        <FormGroup controlId="lastName" bsSize="large">
-          <ControlLabel>Last Name</ControlLabel>
-          <FormControl
-            value={this.state.lastName}
-            onChange={this.handleChange}
-            type="Name"
-          />
-        </FormGroup>
-        <FormGroup controlId="phone" bsSize="large">
-          <ControlLabel>Phone Number</ControlLabel>
-          <FormControl
-            value={this.state.phone}
-            onChange={this.handleChange}
-            type="Number"
           />
         </FormGroup>
         <LoaderButton
