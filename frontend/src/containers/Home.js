@@ -18,12 +18,13 @@ export default class Home extends Component {
 
   setCategory(category) {
     this.setState({ category: category });
+    console.log(this.state.category)
   }
 
   async componentDidMount() {
     let data = [];
     try {
-      data = await API.get("bets", "/bets");
+      data = await API.get("bets", "/allWTBs");
       this.setState({
         wtbs: data,
       });
@@ -35,7 +36,6 @@ export default class Home extends Component {
   render() {
     return (
       <div>
-        <h1>{this.state.category}</h1>
         <Grid container spacing={12}>
           <Grid item sm={3}>
             <UserProfile category={this.state.category} setCategory={this.setCategory} />
@@ -44,7 +44,7 @@ export default class Home extends Component {
           <Grid item sm={9}>
             <Grid container spacing={12}>
               {this.state.wtbs.map(wtb => (
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid item xs={12} sm={6} md={4}>
                   <WTB_Card data={wtb} key={wtb.betId} />
                 </Grid>
               ))}

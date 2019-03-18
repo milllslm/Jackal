@@ -75,6 +75,7 @@ class RecipeReviewCard extends React.Component {
   };
 
   handleEvent(ev) {
+    ev.preventDefault();
     console.log(ev.target.id);
     let category = ev.target.id;
     this.props.setCategory(category);
@@ -93,13 +94,13 @@ class RecipeReviewCard extends React.Component {
        <Grid container justify = "center" spacing={12}>
           <CardHeader style={{ textAlign: 'center' }}
             avatar={
-                <Avatar src="https://cdn.vanderbilt.edu/vu-wp0/wp-content/uploads/sites/79/2010/07/08163329/Chancellor-Zeppos-e1518107839268.jpg" className={classes.bigAvatar}>
+                <Avatar src="http://clipart-library.com/images/pc58xnRXi.jpg" className={classes.bigAvatar}>
                   Name
                 </Avatar>
             }
           />
           <div style={{ textAlign: 'center', color: "white"}}>
-            <Grid item spacing={12}><h3 > Nicholas Zeppos </h3></Grid>
+            <Grid item spacing={12}><h3 > Student's Name </h3></Grid>
           </div>
          <div style={{ textAlign: 'center', color: "white"}}>
           <Grid item spacing={12}><h4 > Vanderbilt </h4></Grid>
@@ -129,7 +130,7 @@ class RecipeReviewCard extends React.Component {
         <Grid container spacing={12} justify="center">
           <Tooltip title="Sports">
           <Fab color="white" aria-label="Sports" id = "Sports" className={classes.fab} onClick={this.handleEvent}>
-            <IoMdTrophy size = "30" />
+            <IoMdTrophy id="Sports" size = "30" />
           </Fab>
           </Tooltip>
           <Tooltip title = "Video Games">
