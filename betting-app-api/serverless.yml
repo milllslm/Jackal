@@ -68,6 +68,15 @@ functions:
           cors: true
           authorizer: aws_iam
 
+  listAll:
+    handler: listAll.main
+    events:
+      - http:
+          path: allWTBs
+          method: get
+          cors: true
+          authorizer: aws_iam
+
   list:
     # Defines an HTTP API endpoint that calls the main function in list.js
     # - path: url path is /notes
