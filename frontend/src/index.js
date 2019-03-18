@@ -17,13 +17,15 @@ class App extends React.Component {
       super(props);
 
       this.state = {
-        isAuthenticated: false
+        isAuthenticated: false,
       };
     }
 
     userHasAuthenticated = authenticated => {
       this.setState({ isAuthenticated: authenticated });
     }
+
+
   render() {
         const childProps = {
       isAuthenticated: this.state.isAuthenticated,

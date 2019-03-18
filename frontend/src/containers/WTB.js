@@ -51,6 +51,10 @@ export default class WTB_Card extends Component {
 
   render() {
     const classes = this.props;
+    let link = (this.props.data.likeThisLink === "N/A") ? <div></div> : 
+          <Typography variant="h6" color="textSecondary">
+            <a href={this.props.data.likeThisLink}>Like This</a>
+          </Typography>;
     return (
     <Card className={classes.card}>
       <div className={classes.details}>
@@ -70,9 +74,7 @@ export default class WTB_Card extends Component {
           <Typography variant="h6" color="textSecondary">
             {this.props.data.category}
           </Typography>
-          <Typography variant="h6" color="textSecondary">
-            <a href={this.props.data.likeThisLink}>Like This</a>
-          </Typography>
+          {link}
         </CardContent>
         <div className={classes.controls}>
           <Button variant="outlined" color="secondary" className={classes.button}>Chat</Button>
@@ -84,8 +86,4 @@ export default class WTB_Card extends Component {
   }
 }
 
-WTB_Card.propTypes = {
-  classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
-};
 

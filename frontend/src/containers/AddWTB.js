@@ -41,7 +41,7 @@ class AddWantToBuy extends Component {
 			rate: 0,
 			rateQualifier: "",
 			maxDuration: "",
-			likeThisLink: "",
+			likeThisLink: "N/A",
 			expiration: null
 		};
 		this.onSubmit = this.onSubmit.bind(this);
@@ -50,6 +50,8 @@ class AddWantToBuy extends Component {
 		this.handleClickClose = this.handleClickClose.bind(this);
 	}
 	async onSubmit() {
+		if (this.state.likeThisLink === "")
+			this.setState({likeThisLink: "None"});
 		await API.post("bets", "/bets", {
 			body: this.state
 		});

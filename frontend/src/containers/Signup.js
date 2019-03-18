@@ -8,6 +8,8 @@ import {
 } from "react-bootstrap";
 import LoaderButton from "./LoaderButton";
 import "./Signup.css";
+import { API } from "aws-amplify";
+
 
 export default class Signup extends Component {
   constructor(props) {
@@ -87,6 +89,16 @@ handleConfirmationSubmit = async event => {
 
 
     this.props.userHasAuthenticated(true);
+    await API.post("bets", "/createUser", {
+      body: {
+        username: this.state.username,
+        email: this.state.email,
+        firstName: "Josh",
+        lastName: "Stafford",
+        college: "Vanderbilt",
+        icon: "Nothing"
+      }
+    });
     this.props.history.push("/");
   } catch (e) {
     alert(e.message);
