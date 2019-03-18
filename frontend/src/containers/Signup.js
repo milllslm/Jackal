@@ -19,7 +19,7 @@ export default class Signup extends Component {
       password: "",
       confirmPassword: "",
       confirmationCode: "",
-      newUser: null
+      newUser: null,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -63,7 +63,7 @@ handleSubmit = async event => {
       password: this.state.password,
       attributes: {
         email: this.state.email
-      }
+      },
     });
     this.setState({
       newUser: newUser
