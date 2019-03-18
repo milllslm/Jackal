@@ -33,6 +33,16 @@ provider:
       Resource: "arn:aws:dynamodb:us-east-1:*:*"
 
 functions:
+  
+  createUser:
+    handler: createUser.main
+    events:
+      - http:
+          path: createUser
+          method: post
+          cors: true
+          authorizer: aws_iam
+
   billing:
     handler: billing.main
     events:
