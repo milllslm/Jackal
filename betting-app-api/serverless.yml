@@ -33,7 +33,16 @@ provider:
       Resource: "arn:aws:dynamodb:us-east-1:*:*"
 
 functions:
-  
+
+  updateUserProfile:
+    handler: updateUserProfile.main
+    events:
+      - http:
+          path: updateUserProfile
+          method: put
+          cors: true
+          authorizer: aws_iam
+
   createUser:
     handler: createUser.main
     events:
