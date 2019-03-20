@@ -64,6 +64,7 @@ class AddWantToBuy extends Component {
 		await API.post("bets", "/bets", {
 			body: this.state
 		});
+		await this.props.setCategory("All")
 		this.setState({ open: false });
 	}
 	onChange(ev) {

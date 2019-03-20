@@ -47,6 +47,7 @@ export default class WTB_Card extends Component {
   async delete(event){
     event.preventDefault();
     let wtb = await API.del("bets", `/bets/${this.props.data.betId}`).then(response => console.log(response))
+    await this.props.setCategory("All");
   }
 
   render() {

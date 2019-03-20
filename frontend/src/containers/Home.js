@@ -20,7 +20,10 @@ export default class Home extends Component {
   // Function updates the Feed to show only requests of a given category
   async setCategory(category) {
     await this.setState({ category: category });
-    try {
+    if (category==="All"){
+      await this.componentDidMount();
+    } else {
+      try {
       let wtbs = await API.get("bets", `/getCategory/${this.state.category}`);
       this.setState({wtbs: wtbs});
     } catch(err) {
@@ -30,6 +33,7 @@ export default class Home extends Component {
       this.setState({wtbs: data});
     }
     console.log(this.state.wtbs);
+    }
   }
 
   // On Rendering, load all of the Feed of the User
@@ -60,7 +64,7 @@ export default class Home extends Component {
               <Grid item xs={12} ><div align="center"><h5>Category: {this.state.category}</h5></div></Grid>
               {this.state.wtbs.map((wtb, i) => (
                 <Grid item key={i} xs={12} sm={12} md={6} lg={4}>
-                  <WTB_Card data={wtb} key={wtb.betId} />
+                  <WTB_Card data={wtb} key={wtb.betId} setCategory={this.setCategory}/>
                 </Grid>
               ))}
             </Grid>
