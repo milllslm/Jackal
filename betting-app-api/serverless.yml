@@ -33,7 +33,34 @@ provider:
       Resource: "arn:aws:dynamodb:us-east-1:*:*"
 
 functions:
-  
+
+  getCategory:
+    handler: getCategory.main
+    events:
+      - http:
+          path: getCategory/{category}
+          method: get
+          cors: true
+          authorizer: aws_iam
+
+  getUser:
+    handler: getUser.main
+    events:
+      - http:
+          path: getUser
+          method: get
+          cors: true
+          authorizer: aws_iam
+
+  updateUserProfile:
+    handler: updateUserProfile.main
+    events:
+      - http:
+          path: updateUserProfile
+          method: put
+          cors: true
+          authorizer: aws_iam
+
   createUser:
     handler: createUser.main
     events:
