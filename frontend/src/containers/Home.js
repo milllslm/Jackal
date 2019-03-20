@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { API } from "aws-amplify";
+import { Auth } from "aws-amplify";
 import WTB_Card from "./WTB.js";
 import Grid from "@material-ui/core/Grid";
 import UserProfile from "./Profile";
@@ -16,19 +17,33 @@ export default class Home extends Component {
     this.setCategory = this.setCategory.bind(this);
   }
 
-  setCategory(category) {
-    this.setState({ category: category });
+  // Function updates the Feed to show only requests of a given category
+  async setCategory(category) {
+    await this.setState({ category: category });
+    try {
+      let wtbs = await API.get("bets", `/getCategory/${this.state.category}`);
+      this.setState({wtbs: wtbs});
+    } catch(err) {
+      console.log(err);
+      alert("There are currently no requests in this category.")
+      let data = await API.get("bets", "/allWTBs");
+      this.setState({wtbs: data});
+    }
+    console.log(this.state.wtbs);
   }
 
+  // On Rendering, load all of the Feed of the User
   async componentDidMount() {
     let data = [];
-    try {
+    if (this.state.category === "All") {
+      try {
       data = await API.get("bets", "/allWTBs");
       this.setState({
         wtbs: data,
       });
     } catch (error) {
       console.log(error);
+    }
     }
   }
 
@@ -37,7 +52,7 @@ export default class Home extends Component {
       <div>
         <Grid container spacing={8}>
           <Grid item xs={6} sm={4} md={3} lg={2}>
-            <UserProfile category={this.state.category} setCategory={this.setCategory} />
+            <UserProfile category={this.state.category} setCategory={this.setCategory} user={this.state.user}/>
           </Grid>
 
           <Grid item xs={6} sm={8} md={9} lg={10}>

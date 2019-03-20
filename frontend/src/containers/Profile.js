@@ -60,10 +60,20 @@ const styles = theme => ({
 class Profile extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { expanded: false };
+    this.state = { expanded: false, user: null};
     this.handleEvent = this.handleEvent.bind(this);
     this.handleExpandClick = this.handleExpandClick.bind(this);
     this.editProfile = this.editProfile.bind(this);
+  }
+
+  async componentWillMount() {
+    let user = null;
+    try {
+      user = await API.get("bets", "/getUser");
+      this.setState({user: user});
+    } catch (error){
+      console.log(error);
+    }
   }
 
   async editProfile() {
@@ -89,13 +99,14 @@ class Profile extends React.Component {
 
   render() {
     const { classes } = this.props;
-
+    let name = this.state.user === null ? <div></div> : <h3>{this.state.user.firstName} {this.state.user.lastName}   </h3>;
+    let college = this.state.user === null ? <div></div> : <h4> {this.state.user.college} </h4>
     return (
       <Card className={classes.card}>
         <div style={{ backgroundColor: "#4055B2" }}>
           <Grid container justify="center" spacing={0}>
             <CardHeader
-              style={{ textAlign: "center" }}
+              style={{ textAlign: "left" }}
               avatar={
                 <Avatar
                   src="http://clipart-library.com/images/pc58xnRXi.jpg"
@@ -105,14 +116,14 @@ class Profile extends React.Component {
                 </Avatar>
               }
             />
-            <div style={{ textAlign: "center", color: "white" }}>
+            <div style={{ textAlign: "center", color: "white", "marginRight": "2px" }}>
               <Grid item xs={12}>
-                <h3> Student's Name </h3>
+                {name}
               </Grid>
             </div>
             <div style={{ textAlign: "center", color: "white" }}>
               <Grid item xs={12}>
-                <h4> Vanderbilt </h4>
+                {college}
               </Grid>
             </div>
           </Grid>
@@ -159,6 +170,7 @@ class Profile extends React.Component {
             alignItems: "center"
           }}
         >
+          <h5>Search by Category</h5>
           <Grid container spacing={0} justify="center">
             <Grid item xs={4}>
             <div onClick={this.handleEvent} id="Sports">
@@ -237,8 +249,8 @@ class Profile extends React.Component {
           <Grid item xs={4}>
             <Tooltip title="Outdoors">
               <Fab key={7}
-                aria-label="Outdoor"
-                id="Outdoor"
+                aria-label="Outdoors"
+                id="Outdoors"
                 className={classes.fab}
                 onClick={this.handleEvent}
               >
