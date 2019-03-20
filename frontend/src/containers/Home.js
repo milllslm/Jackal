@@ -4,15 +4,47 @@ import { Auth } from "aws-amplify";
 import WTB_Card from "./WTB.js";
 import Grid from "@material-ui/core/Grid";
 import UserProfile from "./Profile";
+import Messages from "./Messages";
+import Input from "./Input"
+
+
 
 import "./Home.css";
+
+function randomName() {
+  const adjectives = [
+    "sbhat", "jstafford", "lmills"
+  ];
+
+  const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+  return adjective;
+}
+
+function randomColor() {
+  return '#' + Math.floor(Math.random() * 0xFFFFFF).toString(16);
+}
+
+
 
 export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
       wtbs: [],
-      category: "All"
+      category: "All",
+      messages: [
+        {
+          text: "Test message",
+          member: {
+            color: "blue",
+            username: "testuser"
+          }
+        }
+      ],
+      member: {
+        username: randomName(),
+        color: randomColor()
+      }
     };
     this.setCategory = this.setCategory.bind(this);
   }
@@ -51,6 +83,7 @@ export default class Home extends Component {
     }
   }
 
+
   render() {
     return (
       <div>
@@ -70,7 +103,24 @@ export default class Home extends Component {
             </Grid>
           </Grid>
         </Grid>
+        <div className = "App">
+          <Messages
+          messages={this.state.messages}
+          currentMember={this.state.member}
+        />
+          <Input
+        onSendMessage={this.onSendMessage}
+      />
+      </div>
       </div>
     );
   }
+  onSendMessage = (message) => {
+  const messages = this.state.messages
+  messages.push({
+    text: message,
+    member: this.state.member
+  })
+  this.setState({messages: messages})
+}
 }
