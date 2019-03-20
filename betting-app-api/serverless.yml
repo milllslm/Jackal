@@ -34,6 +34,15 @@ provider:
 
 functions:
 
+  getUser:
+    handler: getUser.main
+    events:
+      - http:
+          path: getUser
+          method: get
+          cors: true
+          authorizer: aws_iam
+
   updateUserProfile:
     handler: updateUserProfile.main
     events:
