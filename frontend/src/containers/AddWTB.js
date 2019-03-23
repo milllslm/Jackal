@@ -1,3 +1,4 @@
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
@@ -64,6 +65,7 @@ class AddWantToBuy extends Component {
 		await API.post("bets", "/bets", {
 			body: this.state
 		});
+		await this.props.setCategory("All")
 		this.setState({ open: false });
 	}
 	onChange(ev) {
