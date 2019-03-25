@@ -286,7 +286,7 @@ class Profile extends React.Component {
         </div>
 
         <CardActions className={classes.actions} disableActionSpacing>
-          <AddWantToBuy />
+          <AddWantToBuy setCategory={this.props.setCategory}/>
         </CardActions>
       </Card>
     );
