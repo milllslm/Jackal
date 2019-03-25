@@ -117,10 +117,10 @@ export default class Home extends Component {
           messages={this.state.messages}
           currentMember={this.state.member}
         />
-          <Input
-        onSendMessage={this.onSendMessage}
-      />
-      </div>
+            <Input
+          onSendMessage={this.onSendMessage}
+        />
+        </div>
       </div>
     );
   }
