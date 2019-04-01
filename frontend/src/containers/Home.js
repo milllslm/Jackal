@@ -32,22 +32,31 @@ export default class Home extends Component {
     this.state = {
       wtbs: [],
       category: "All",
-      messages: [
-        {
-          text: "Test message",
-          member: {
-            color: "blue",
-            username: "testuser"
-          }
-        }
-      ],
+      messages: [],
       member: {
         username: randomName(),
         color: randomColor()
       }
     };
-    this.setCategory = this.setCategory.bind(this);
-  }
+    this.drone = new window.Scaledrone("hT7l8bxuKDH29NMC", {
+    data: this.state.member
+  });
+    this.drone.on('open', error => {
+      if (error) {
+        return console.error(error);
+      }
+      const member = {...this.state.member};
+      member.id = this.drone.clientId;
+      this.setState({member});
+      });
+      this.setCategory = this.setCategory.bind(this);
+      const room = this.drone.subscribe("observable-room");
+      room.on('data', (data, member) => {
+      const messages = this.state.messages;
+      messages.push({member, text: data});
+      this.setState({messages});
+     });
+    }
 
   // Function updates the Feed to show only requests of a given category
   async setCategory(category) {
@@ -108,19 +117,17 @@ export default class Home extends Component {
           messages={this.state.messages}
           currentMember={this.state.member}
         />
-          <Input
-        onSendMessage={this.onSendMessage}
-      />
-      </div>
+            <Input
+          onSendMessage={this.onSendMessage}
+        />
+        </div>
       </div>
     );
   }
   onSendMessage = (message) => {
-  const messages = this.state.messages
-  messages.push({
-    text: message,
-    member: this.state.member
-  })
-  this.setState({messages: messages})
+  this.drone.publish({
+    room: "observable-room",
+    message
+  });
 }
 }

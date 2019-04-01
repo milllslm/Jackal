@@ -33,6 +33,8 @@ import { MdRestaurant } from "react-icons/md";
 import Tooltip from "@material-ui/core/Tooltip";
 import { FaStarOfLife } from "react-icons/fa";
 import { API } from "aws-amplify";
+import { MdBatteryCharging80 } from "react-icons/md";
+
 
 
 const styles = theme => ({
@@ -173,6 +175,18 @@ class Profile extends React.Component {
           <h5>Search by Category</h5>
           <Grid container spacing={0} justify="center">
             <Grid item xs={4}>
+              <Tooltip title="Miscellaneous">
+                <Fab key={9}
+                  aria-label="Miscellaneous"
+                  id="Miscellaneous"
+                  className={classes.fab}
+                  onClick={this.handleEvent}
+                >
+                  <FaStarOfLife size="30" />
+                </Fab>
+              </Tooltip>
+            </Grid>
+            <Grid item xs={4}>
             <div onClick={this.handleEvent} id="Sports">
             <Tooltip title="Sports">
               <Fab key={1}
@@ -206,7 +220,7 @@ class Profile extends React.Component {
                 className={classes.fab}
                 onClick={this.handleEvent}
               >
-                <IoIosPower size="30" />
+                <MdBatteryCharging80 size="30" />
               </Fab>
             </Tooltip>
             </Grid>
@@ -270,18 +284,6 @@ class Profile extends React.Component {
               </Fab>
             </Tooltip>
             </Grid>
-            <Grid item xs={4}>
-            <Tooltip title="Miscellaneous">
-              <Fab key={9}
-                aria-label="Miscellaneous"
-                id="Miscellaneous"
-                className={classes.fab}
-                onClick={this.handleEvent}
-              >
-                <FaStarOfLife size="30" />
-              </Fab>
-            </Tooltip>
-          </Grid>
           </Grid>
         </div>
 
