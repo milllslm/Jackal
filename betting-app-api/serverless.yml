@@ -34,6 +34,15 @@ provider:
 
 functions:
 
+  getUserById:
+    handler: getUserById.main
+    events:
+      - http:
+          path: getUserById/{id}
+          method: get
+          cors: true
+          authorizer: aws_iam
+
   getCategory:
     handler: getCategory.main
     events:
