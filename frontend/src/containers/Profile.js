@@ -33,6 +33,8 @@ import { MdRestaurant } from "react-icons/md";
 import Tooltip from "@material-ui/core/Tooltip";
 import { FaStarOfLife } from "react-icons/fa";
 import { API } from "aws-amplify";
+import { MdBatteryCharging80 } from "react-icons/md";
+
 
 
 const styles = theme => ({
@@ -60,19 +62,29 @@ const styles = theme => ({
 class Profile extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { expanded: false };
+    this.state = { expanded: false, user: null};
     this.handleEvent = this.handleEvent.bind(this);
     this.handleExpandClick = this.handleExpandClick.bind(this);
     this.editProfile = this.editProfile.bind(this);
   }
 
+  async componentWillMount() {
+    let user = null;
+    try {
+      user = await API.get("bets", "/getUser");
+      this.setState({user: user});
+    } catch (error){
+      console.log(error);
+    }
+  }
+
   async editProfile() {
-    let edit = await API.put("bets", "/updateUserProfile", {
-      body: {firstName: "Josh",
-            lastName: "Stafford",
-            icon: "blue"}
-    });
-    console.log("Updated Profile")
+    // let edit = await API.put("bets", "/updateUserProfile", {
+    //   body: {firstName: "Josh",
+    //         lastName: "Stafford",
+    //         icon: "blue"}
+    // });
+    // console.log("Updated Profile")
   }
 
   handleEvent(ev) {
@@ -89,13 +101,14 @@ class Profile extends React.Component {
 
   render() {
     const { classes } = this.props;
-
+    let name = this.state.user === null ? <div></div> : <h3>{this.state.user.firstName} {this.state.user.lastName}   </h3>;
+    let college = this.state.user === null ? <div></div> : <h4> {this.state.user.college} </h4>
     return (
       <Card className={classes.card}>
         <div style={{ backgroundColor: "#4055B2" }}>
           <Grid container justify="center" spacing={0}>
             <CardHeader
-              style={{ textAlign: "center" }}
+              style={{ textAlign: "left" }}
               avatar={
                 <Avatar
                   src="http://clipart-library.com/images/pc58xnRXi.jpg"
@@ -105,14 +118,14 @@ class Profile extends React.Component {
                 </Avatar>
               }
             />
-            <div style={{ textAlign: "center", color: "white" }}>
+            <div style={{ textAlign: "center", color: "white", "marginRight": "2px" }}>
               <Grid item xs={12}>
-                <h3> Student's Name </h3>
+                {name}
               </Grid>
             </div>
             <div style={{ textAlign: "center", color: "white" }}>
               <Grid item xs={12}>
-                <h4> Vanderbilt </h4>
+                {college}
               </Grid>
             </div>
           </Grid>
@@ -159,7 +172,20 @@ class Profile extends React.Component {
             alignItems: "center"
           }}
         >
+          <h5>Search by Category</h5>
           <Grid container spacing={0} justify="center">
+            <Grid item xs={4}>
+              <Tooltip title="All">
+                <Fab key={9}
+                  aria-label="All"
+                  id="All"
+                  className={classes.fab}
+                  onClick={this.handleEvent}
+                >
+                  <FaStarOfLife size="30" />
+                </Fab>
+              </Tooltip>
+            </Grid>
             <Grid item xs={4}>
             <div onClick={this.handleEvent} id="Sports">
             <Tooltip title="Sports">
@@ -194,7 +220,7 @@ class Profile extends React.Component {
                 className={classes.fab}
                 onClick={this.handleEvent}
               >
-                <IoIosPower size="30" />
+                <MdBatteryCharging80 size="30" />
               </Fab>
             </Tooltip>
             </Grid>
@@ -237,8 +263,8 @@ class Profile extends React.Component {
           <Grid item xs={4}>
             <Tooltip title="Outdoors">
               <Fab key={7}
-                aria-label="Outdoor"
-                id="Outdoor"
+                aria-label="Outdoors"
+                id="Outdoors"
                 className={classes.fab}
                 onClick={this.handleEvent}
               >
@@ -258,23 +284,11 @@ class Profile extends React.Component {
               </Fab>
             </Tooltip>
             </Grid>
-            <Grid item xs={4}>
-            <Tooltip title="Miscellaneous">
-              <Fab key={9}
-                aria-label="Miscellaneous"
-                id="Miscellaneous"
-                className={classes.fab}
-                onClick={this.handleEvent}
-              >
-                <FaStarOfLife size="30" />
-              </Fab>
-            </Tooltip>
-          </Grid>
           </Grid>
         </div>
 
         <CardActions className={classes.actions} disableActionSpacing>
-          <AddWantToBuy />
+          <AddWantToBuy setCategory={this.props.setCategory}/>
         </CardActions>
       </Card>
     );

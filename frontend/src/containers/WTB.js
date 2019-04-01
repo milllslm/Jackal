@@ -41,12 +41,26 @@ export default class WTB_Card extends Component {
   constructor(props){
     super(props);
     this.delete = this.delete.bind(this);
+    this.state = {mine: false, user: "Loading..."};
+    this.chat = this.chat.bind(this);
   }
-  componentDidMount(){
+  async componentDidMount(){
+    let cardUser = await API.get("bets", `/getUserById/${this.props.data.userId}`);
+    let currentUser = await API.get("bets", "/getUser");
+    if (currentUser.userId === cardUser.userId){
+      this.setState({mine: true});
+    }
+    this.setState({user: `${cardUser.firstName} ${cardUser.lastName}`});
   }
   async delete(event){
     event.preventDefault();
     let wtb = await API.del("bets", `/bets/${this.props.data.betId}`).then(response => console.log(response))
+    await this.props.setCategory("All");
+  }
+
+  async chat(event){
+    event.preventDefault();
+    document.getElementById('Message-content').scrollIntoView() 
   }
 
   render() {
@@ -55,6 +69,16 @@ export default class WTB_Card extends Component {
           <Typography variant="h6" color="textSecondary">
             <a href={this.props.data.likeThisLink}>Like This</a>
           </Typography>;
+    let deleteButton = <Button variant="outlined" color="secondary" onClick={this.delete} className={classes.button}>Delete</Button>;
+    let acceptButton = <Button variant="outlined" style={{float: "right"}}color="primary" className={classes.button}>Accept</Button>;
+    let buttons = (this.state.mine) ?
+      <div className={classes.controls}>
+            {deleteButton}
+      </div> :
+      <div className={classes.controls}>
+            <Button key={this.props.data.betId} variant="outlined" color="secondary" onClick={this.accept} className={classes.button}>Chat</Button>
+            {acceptButton}
+      </div>
     return (
     <Card className={classes.card}>
       <div className={classes.details}>
@@ -64,6 +88,9 @@ export default class WTB_Card extends Component {
           </Typography>
           <Typography variant="h6" color="textSecondary">
             {this.props.data.description}
+          </Typography>
+          <Typography variant="h6" color="textSecondary">
+            {this.state.user}
           </Typography>
           <Typography variant="h6" color="textSecondary">
             Rate: ${this.props.data.rate} per {this.props.data.rateQualifier}
@@ -76,10 +103,7 @@ export default class WTB_Card extends Component {
           </Typography>
           {link}
         </CardContent>
-        <div className={classes.controls}>
-          <Button variant="outlined" color="secondary" className={classes.button}>Chat</Button>
-          <Button variant="outlined" color="secondary" onClick={this.delete} className={classes.button}>Delete</Button>
-        </div>
+          {buttons}
       </div>
     </Card>
   );

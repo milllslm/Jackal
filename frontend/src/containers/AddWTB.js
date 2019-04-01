@@ -1,3 +1,4 @@
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
@@ -12,6 +13,14 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import { API } from "aws-amplify";
+import Select from "@material-ui/core/Select";
+import Input from "@material-ui/core/Input";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import FilledInput from "@material-ui/core/FilledInput";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControl from "@material-ui/core/FormControl";
 
 const styles = theme => ({
 	container: {
@@ -48,17 +57,24 @@ class AddWantToBuy extends Component {
 		this.onChange = this.onChange.bind(this);
 		this.handleClickOpen = this.handleClickOpen.bind(this);
 		this.handleClickClose = this.handleClickClose.bind(this);
+		this.changeCategory = this.changeCategory.bind(this);
 	}
 	async onSubmit() {
 		if (this.state.likeThisLink === "")
-			this.setState({likeThisLink: "None"});
+			this.setState({ likeThisLink: "None" });
 		await API.post("bets", "/bets", {
 			body: this.state
 		});
+		await this.props.setCategory("All")
 		this.setState({ open: false });
 	}
 	onChange(ev) {
 		this.setState({ [ev.target.id]: ev.target.value });
+	}
+
+	changeCategory(ev){
+		console.log(ev.target);
+		this.setState({category: ev.target.value});
 	}
 
 	handleClickOpen() {
@@ -114,13 +130,24 @@ class AddWantToBuy extends Component {
 							type="text"
 							fullWidth
 						/>
-						<TextField
-							onChange={this.onChange}
-							id="category"
-							label="Category"
-							type="email"
-							fullWidth
-						/>
+						 <FormControl style={{minWidth: 500}}>
+          				<InputLabel htmlFor="category">Category</InputLabel>
+						<Select
+							value={this.state.category}
+							onChange={this.changeCategory}
+							inputProps={{
+								name: "Category",
+								id: "category"
+							}}
+						>
+							<MenuItem value="">
+								<em>None</em>
+							</MenuItem>
+							<MenuItem value="Sports">Sports</MenuItem>
+							<MenuItem value="Video Games">Video Games</MenuItem>
+							<MenuItem value="Outdoors">Outdoors</MenuItem>
+						</Select>
+						</FormControl>
 						<TextField
 							onChange={this.onChange}
 							id="maxDuration"
