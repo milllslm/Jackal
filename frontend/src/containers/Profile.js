@@ -79,12 +79,12 @@ class Profile extends React.Component {
   }
 
   async editProfile() {
-    let edit = await API.put("bets", "/updateUserProfile", {
-      body: {firstName: "Josh",
-            lastName: "Stafford",
-            icon: "blue"}
-    });
-    console.log("Updated Profile")
+    // let edit = await API.put("bets", "/updateUserProfile", {
+    //   body: {firstName: "Josh",
+    //         lastName: "Stafford",
+    //         icon: "blue"}
+    // });
+    // console.log("Updated Profile")
   }
 
   handleEvent(ev) {
@@ -175,10 +175,10 @@ class Profile extends React.Component {
           <h5>Search by Category</h5>
           <Grid container spacing={0} justify="center">
             <Grid item xs={4}>
-              <Tooltip title="Miscellaneous">
+              <Tooltip title="All">
                 <Fab key={9}
-                  aria-label="Miscellaneous"
-                  id="Miscellaneous"
+                  aria-label="All"
+                  id="All"
                   className={classes.fab}
                   onClick={this.handleEvent}
                 >

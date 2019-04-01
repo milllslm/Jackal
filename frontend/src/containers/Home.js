@@ -5,75 +5,71 @@ import WTB_Card from "./WTB.js";
 import Grid from "@material-ui/core/Grid";
 import UserProfile from "./Profile";
 import Messages from "./Messages";
-import Input from "./Input"
-
-
+import Input from "./Input";
 
 import "./Home.css";
 
-function randomName() {
-  const adjectives = [
-    "sbhat", "jstafford", "lmills"
-  ];
-
-  const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
-  return adjective;
-}
-
 function randomColor() {
-  return '#' + Math.floor(Math.random() * 0xFFFFFF).toString(16);
+  return "#" + Math.floor(Math.random() * 0xffffff).toString(16);
 }
-
-
 
 export default class Home extends Component {
-  constructor(props) {
+ constructor(props) {
     super(props);
     this.state = {
       wtbs: [],
       category: "All",
       messages: [],
       member: {
-        username: randomName(),
+        username: "Joshua Stafford",
         color: randomColor()
       }
     };
+    //this.getUser = this.getUser.bind(this);
+
     this.drone = new window.Scaledrone("hT7l8bxuKDH29NMC", {
-    data: this.state.member
-  });
-    this.drone.on('open', error => {
+      data: this.state.member
+    });
+    this.drone.on("open", error => {
       if (error) {
         return console.error(error);
       }
-      const member = {...this.state.member};
+      const member = { ...this.state.member };
       member.id = this.drone.clientId;
-      this.setState({member});
-      });
-      this.setCategory = this.setCategory.bind(this);
-      const room = this.drone.subscribe("observable-room");
-      room.on('data', (data, member) => {
+      this.setState({ member });
+    });
+    this.setCategory = this.setCategory.bind(this);
+    const room = this.drone.subscribe("observable-room");
+    room.on("data", (data, member) => {
       const messages = this.state.messages;
-      messages.push({member, text: data});
-      this.setState({messages});
-     });
-    }
+      messages.push({ member, text: data });
+      this.setState({ messages });
+    });
+  }
+
+  // async getUser(){
+  //   let user = await API.get("bets", "/getUser");
+  //   let name = `${user.firstName} ${user.lastName}`;
+  //   let color = randomColor();
+  //   return { name: name, color: color };
+  // }
 
   // Function updates the Feed to show only requests of a given category
   async setCategory(category) {
     await this.setState({ category: category });
-    if (category==="All"){
+    if (category === "All") {
       await this.componentDidMount();
     } else {
       try {
-      let wtbs = await API.get("bets", `/getCategory/${this.state.category}`);
-      this.setState({wtbs: wtbs});
-    } catch(err) {
-      console.log(err);
-      alert("There are currently no requests in this category.")
-      let data = await API.get("bets", "/allWTBs");
-      this.setState({wtbs: data});
-    }
-    console.log(this.state.wtbs);
+        let wtbs = await API.get("bets", `/getCategory/${this.state.category}`);
+        this.setState({ wtbs: wtbs });
+      } catch (err) {
+        console.log(err);
+        alert("There are currently no requests in this category.");
+        let data = await API.get("bets", "/allWTBs");
+        this.setState({ wtbs: data });
+      }
+      console.log(this.state.wtbs);
     }
   }
 
@@ -82,52 +78,62 @@ export default class Home extends Component {
     let data = [];
     if (this.state.category === "All") {
       try {
-      data = await API.get("bets", "/allWTBs");
-      this.setState({
-        wtbs: data,
-      });
-    } catch (error) {
-      console.log(error);
+        data = await API.get("bets", "/allWTBs");
+        this.setState({
+          wtbs: data
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
-    }
+    console.log(this.state.member);
   }
-
 
   render() {
     return (
       <div>
         <Grid container spacing={8}>
           <Grid item xs={6} sm={4} md={3} lg={2}>
-            <UserProfile category={this.state.category} setCategory={this.setCategory} user={this.state.user}/>
+            <UserProfile
+              category={this.state.category}
+              setCategory={this.setCategory}
+              user={this.state.user}
+            />
           </Grid>
 
           <Grid item xs={6} sm={8} md={9} lg={10}>
             <Grid container spacing={8}>
-              <Grid item xs={12} ><div align="center"><h5>Category: {this.state.category}</h5></div></Grid>
+              <Grid item xs={12}>
+                <div align="center">
+                  <h5>Category: {this.state.category}</h5>
+                </div>
+              </Grid>
               {this.state.wtbs.map((wtb, i) => (
                 <Grid item key={i} xs={12} sm={12} md={6} lg={4}>
-                  <WTB_Card data={wtb} key={wtb.betId} setCategory={this.setCategory}/>
+                  <WTB_Card
+                    data={wtb}
+                    key={wtb.betId}
+                    setCategory={this.setCategory}
+                  />
                 </Grid>
               ))}
             </Grid>
           </Grid>
         </Grid>
-        <div className = "App">
+        <div className="App">
           <Messages
-          messages={this.state.messages}
-          currentMember={this.state.member}
-        />
-            <Input
-          onSendMessage={this.onSendMessage}
-        />
+            messages={this.state.messages}
+            currentMember={this.state.member}
+          />
+          <Input onSendMessage={this.onSendMessage} />
         </div>
       </div>
     );
   }
-  onSendMessage = (message) => {
-  this.drone.publish({
-    room: "observable-room",
-    message
-  });
-}
+  onSendMessage = message => {
+    this.drone.publish({
+      room: "observable-room",
+      message
+    });
+  };
 }

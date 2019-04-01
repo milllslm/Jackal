@@ -30,12 +30,6 @@ export default class Login extends Component {
     try {
       let user = await Auth.signIn(this.state.email, this.state.password);
       console.log(user);
-      let data = await API.get(
-        "https://youbet.auth.us-east-1.amazoncognito.com/oauth2/userInfo"
-      );
-      console.log(data);
-      sessionStorage.setItem("userId", "test");
-      //window.location.href="/";
     } catch (e) {
       console.log(e);
       this.props.userHasAuthenticated(true);
