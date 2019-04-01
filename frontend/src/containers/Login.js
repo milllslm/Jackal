@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import "./Login.css";
-import { Auth } from "aws-amplify";
-
+import { Auth, API } from "aws-amplify";
+import Amplify from "aws-amplify";
+import * as AmazonCognitoIdentity from "amazon-cognito-identity-js";
 
 export default class Login extends Component {
   constructor(props) {
@@ -22,17 +23,24 @@ export default class Login extends Component {
     this.setState({
       [event.target.id]: event.target.value
     });
-  }
+  };
 
   handleSubmit = async event => {
     event.preventDefault();
     try {
-      await Auth.signIn(this.state.email, this.state.password);
-      window.location.href="/";
+      let user = await Auth.signIn(this.state.email, this.state.password);
+      console.log(user);
+      let data = await API.get(
+        "https://youbet.auth.us-east-1.amazoncognito.com/oauth2/userInfo"
+      );
+      console.log(data);
+      sessionStorage.setItem("userId", "test");
+      //window.location.href="/";
     } catch (e) {
+      console.log(e);
       this.props.userHasAuthenticated(true);
     }
-}
+  };
 
   render() {
     return (

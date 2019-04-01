@@ -41,13 +41,28 @@ export default class WTB_Card extends Component {
   constructor(props){
     super(props);
     this.delete = this.delete.bind(this);
+    this.state = {mine: false};
+    this.accept = this.accept.bind(this);
   }
-  componentDidMount(){
+  async componentDidMount(){
+    console.log(this.props.data);
+    let data = await API.get("bets", "/bets");
+    let userBetId = data[0].userId;
+    if (userBetId === this.props.data.userId){
+      this.setState({mine: true});
+    }
+    let userId = this.props.data.userId;
+    // implement name on Card
+    console.log(data)
   }
   async delete(event){
     event.preventDefault();
     let wtb = await API.del("bets", `/bets/${this.props.data.betId}`).then(response => console.log(response))
     await this.props.setCategory("All");
+  }
+
+  async accept(event){
+    event.preventDefault();
   }
 
   render() {
@@ -56,6 +71,17 @@ export default class WTB_Card extends Component {
           <Typography variant="h6" color="textSecondary">
             <a href={this.props.data.likeThisLink}>Like This</a>
           </Typography>;
+    let deleteButton = <Button variant="outlined" color="secondary" onClick={this.delete} className={classes.button}>Delete</Button>;
+    let acceptButton = <Button variant="outlined" color="primary" onClick={this.accept} className={classes.button}>Accept</Button>;
+    let buttons = (this.state.mine) ?
+      <div className={classes.controls}>
+            <Button key={this.props.data.betId} variant="outlined" color="secondary" className={classes.button}>Chat</Button>
+            {deleteButton}
+      </div> :
+      <div className={classes.controls}>
+            <Button key={this.props.data.betId} variant="outlined" color="secondary" className={classes.button}>Chat</Button>
+            {acceptButton}
+      </div>
     return (
     <Card className={classes.card}>
       <div className={classes.details}>
@@ -77,10 +103,7 @@ export default class WTB_Card extends Component {
           </Typography>
           {link}
         </CardContent>
-        <div className={classes.controls}>
-          <Button variant="outlined" color="secondary" className={classes.button}>Chat</Button>
-          <Button variant="outlined" color="secondary" onClick={this.delete} className={classes.button}>Delete</Button>
-        </div>
+          {buttons}
       </div>
     </Card>
   );
