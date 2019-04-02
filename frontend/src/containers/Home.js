@@ -21,38 +21,19 @@ export default class Home extends Component {
       category: "All",
       messages: [],
       member: {
-        username: "Joshua Stafford",
+        username: "Anonymous",
         color: randomColor()
       }
     };
-    //this.getUser = this.getUser.bind(this);
-
-    this.drone = new window.Scaledrone("hT7l8bxuKDH29NMC", {
-      data: this.state.member
-    });
-    this.drone.on("open", error => {
-      if (error) {
-        return console.error(error);
-      }
-      const member = { ...this.state.member };
-      member.id = this.drone.clientId;
-      this.setState({ member });
-    });
-    this.setCategory = this.setCategory.bind(this);
-    const room = this.drone.subscribe("observable-room");
-    room.on("data", (data, member) => {
-      const messages = this.state.messages;
-      messages.push({ member, text: data });
-      this.setState({ messages });
-    });
+    this.getUser = this.getUser.bind(this);
   }
 
-  // async getUser(){
-  //   let user = await API.get("bets", "/getUser");
-  //   let name = `${user.firstName} ${user.lastName}`;
-  //   let color = randomColor();
-  //   return { name: name, color: color };
-  // }
+  async getUser(){
+    let user = await API.get("bets", "/getUser");
+    let name = `${user.firstName} ${user.lastName}`;
+    let color = randomColor();
+    return { name: name, color: color };
+  }
 
   // Function updates the Feed to show only requests of a given category
   async setCategory(category) {
@@ -75,10 +56,11 @@ export default class Home extends Component {
 
   // On Rendering, load all of the Feed of the User
   async componentDidMount() {
-    let data = [];
+    let user = await API.get("bets", "/getUser");
+    this.setState({member: {username: `${user.firstName} ${user.lastName}`, color: randomColor()} })
     if (this.state.category === "All") {
       try {
-        data = await API.get("bets", "/allWTBs");
+        let data = await API.get("bets", "/allWTBs");
         this.setState({
           wtbs: data
         });
@@ -86,7 +68,27 @@ export default class Home extends Component {
         console.log(error);
       }
     }
-    console.log(this.state.member);
+
+
+    this.drone = new window.Scaledrone("hT7l8bxuKDH29NMC", {
+      data: this.state.member
+    });
+    this.drone.on("open", error => {
+      if (error) {
+        return console.error(error);
+      }
+      const member = { ...this.state.member };
+      member.id = this.drone.clientId;
+      this.setState({ member });
+    });
+    this.setCategory = this.setCategory.bind(this);
+    const room = this.drone.subscribe("observable-room");
+    room.on("data", (data, member) => {
+      const messages = this.state.messages;
+      messages.push({ member, text: data });
+      this.setState({ messages });
+    });
+
   }
 
   render() {
