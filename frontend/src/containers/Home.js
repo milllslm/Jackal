@@ -68,6 +68,7 @@ export default class Home extends Component {
         console.log(error);
       }
     }
+   this.setCategory = this.setCategory.bind(this);
 
 
     this.drone = new window.Scaledrone("hT7l8bxuKDH29NMC", {
@@ -81,9 +82,15 @@ export default class Home extends Component {
       member.id = this.drone.clientId;
       this.setState({ member });
     });
-    this.setCategory = this.setCategory.bind(this);
     const room = this.drone.subscribe("observable-room");
     room.on("data", (data, member) => {
+      const messages = this.state.messages;
+      messages.push({ member, text: data });
+      this.setState({ messages });
+    });
+
+     const room1 = this.drone.subscribe("new-room");
+      room1.on("data", (data, member) => {
       const messages = this.state.messages;
       messages.push({ member, text: data });
       this.setState({ messages });
@@ -138,4 +145,5 @@ export default class Home extends Component {
       message
     });
   };
+
 }
