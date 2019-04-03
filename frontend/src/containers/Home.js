@@ -81,9 +81,18 @@ export default class Home extends Component {
       member.id = this.drone.clientId;
       this.setState({ member });
     });
+
     this.setCategory = this.setCategory.bind(this);
-    const room = this.drone.subscribe("observable-room");
+
+    const room = this.drone.subscribe("josh-room");
     room.on("data", (data, member) => {
+      const messages = this.state.messages;
+      messages.push({ member, text: data });
+      this.setState({ messages });
+    });
+
+    const room2 = this.drone.subscribe("observable-room-2");
+    room2.on("data", (data, member) => {
       const messages = this.state.messages;
       messages.push({ member, text: data });
       this.setState({ messages });
@@ -134,7 +143,7 @@ export default class Home extends Component {
   }
   onSendMessage = message => {
     this.drone.publish({
-      room: "observable-room",
+      room: "observable-room-2",
       message
     });
   };

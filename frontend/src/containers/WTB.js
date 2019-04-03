@@ -41,8 +41,9 @@ export default class WTB_Card extends Component {
   constructor(props){
     super(props);
     this.delete = this.delete.bind(this);
-    this.state = {mine: false, user: "Loading..."};
+    this.state = {mine: false, user: "Loading...", accepted: false};
     this.chat = this.chat.bind(this);
+    this.accept = this.accept.bind(this);
   }
   async componentDidMount(){
     let cardUser = await API.get("bets", `/getUserById/${this.props.data.userId}`);
@@ -63,14 +64,26 @@ export default class WTB_Card extends Component {
     document.getElementById('Message-content').scrollIntoView() 
   }
 
+  async accept(event){
+    event.preventDefault();
+    let accepted = await API.post("bets", "/completeRequest", {
+      body: {
+        betId: this.props.data.betId,
+        balance: this.props.data.rate,
+        otherUserId: this.props.data.userId
+      }
+    }).then(data => this.setState({accepted: true}));
+  };
+
   render() {
+    if (this.state.accepted === false) {
     const classes = this.props;
     let link = (this.props.data.likeThisLink === "N/A") ? <div></div> : 
           <Typography variant="h6" color="textSecondary">
             <a href={this.props.data.likeThisLink}>Like This</a>
           </Typography>;
     let deleteButton = <Button variant="outlined" color="secondary" onClick={this.delete} className={classes.button}>Delete</Button>;
-    let acceptButton = <Button variant="outlined" style={{float: "right"}}color="primary" className={classes.button}>Accept</Button>;
+    let acceptButton = <Button variant="outlined" style={{float: "right"}}color="primary" onClick={this.accept} className={classes.button}>Accept</Button>;
     let buttons = (this.state.mine) ?
       <div className={classes.controls}>
             {deleteButton}
@@ -107,7 +120,10 @@ export default class WTB_Card extends Component {
       </div>
     </Card>
   );
+  } else {
+    return(<div></div>)
   }
+}
 }
 
 

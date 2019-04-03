@@ -102,7 +102,7 @@ class Profile extends React.Component {
   render() {
     const { classes } = this.props;
     let name = this.state.user === null ? <div></div> : <h3>{this.state.user.firstName} {this.state.user.lastName}   </h3>;
-    let college = this.state.user === null ? <div></div> : <h4> {this.state.user.college} </h4>
+    let college = this.state.user === null ? <div></div> : <h4> {`Balance: $${this.state.user.balance}`} </h4>
     return (
       <Card className={classes.card}>
         <div style={{ backgroundColor: "#4055B2" }}>
