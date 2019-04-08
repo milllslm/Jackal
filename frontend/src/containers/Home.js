@@ -21,6 +21,7 @@ export default class Home extends Component {
       category: "All",
       messages: [],
       activeCardId: "",
+      room: null,
       member: {
         username: "Anonymous",
         color: randomColor()
@@ -51,33 +52,21 @@ export default class Home extends Component {
   }
 
   async activateChat(cardId) {
-    this.drone = new window.Scaledrone("hT7l8bxuKDH29NMC", {
-      data: this.state.member
-    });
-    this.drone.on("open", error => {
-      if (error) {
-        return console.error(error);
-      }
-      const member = { ...this.state.member };
-      member.id = this.drone.clientId;
-      this.setState({ member });
-    });
-<<<<<<< HEAD
+    if (this.state.activeCardId !== ""){ // not the first room
+      this.setState({messages: []})
+      this.state.room.unsubscribe();
+    }
+
     this.setState({activeCardId: cardId});
     const room = this.drone.subscribe(`observable-room-${cardId}`);
-=======
 
-    this.setCategory = this.setCategory.bind(this);
-
-    const room = this.drone.subscribe("observable-room");
->>>>>>> e4c51198f075fb767d5aebebf3b89e406229201a
     room.on("data", (data, member) => {
       const messages = this.state.messages;
       messages.push({ member, text: data });
       this.setState({ messages });
     });
+    this.setState({room: room});
 
-<<<<<<< HEAD
   }
 
   // On Rendering, load all of the Feed of the User
@@ -94,22 +83,19 @@ export default class Home extends Component {
         console.log(error);
       }
     }
-=======
-    const history = this.drone.subscribe("observable-room", {
-      historyCount: 5 // ask for the 5 most recent messages from the room's history
+
+    this.drone = new window.Scaledrone("hT7l8bxuKDH29NMC", {
+      data: this.state.member
     });
-    history.on('history_message', ({data}) => {
-      console.log(data);
+    this.drone.on("open", error => {
+      if (error) {
+        return console.error(error);
+      }
+      const member = { ...this.state.member };
+      member.id = this.drone.clientId;
+      this.setState({ member });
     });
 
-    history.on('data', data => {
-      console.log(data);
-    });
-
-
-
-    // history.on("past", message => console.log("message"));
->>>>>>> e4c51198f075fb767d5aebebf3b89e406229201a
   }
 
   render() {
@@ -157,11 +143,7 @@ export default class Home extends Component {
   }
   onSendMessage = message => {
     this.drone.publish({
-<<<<<<< HEAD
       room: `observable-room-${this.state.activeCardId}`,
-=======
-      room: "observable-room",
->>>>>>> e4c51198f075fb767d5aebebf3b89e406229201a
       message
     });
   };
