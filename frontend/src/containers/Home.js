@@ -62,14 +62,22 @@ export default class Home extends Component {
       member.id = this.drone.clientId;
       this.setState({ member });
     });
+<<<<<<< HEAD
     this.setState({activeCardId: cardId});
     const room = this.drone.subscribe(`observable-room-${cardId}`);
+=======
+
+    this.setCategory = this.setCategory.bind(this);
+
+    const room = this.drone.subscribe("observable-room");
+>>>>>>> e4c51198f075fb767d5aebebf3b89e406229201a
     room.on("data", (data, member) => {
       const messages = this.state.messages;
       messages.push({ member, text: data });
       this.setState({ messages });
     });
 
+<<<<<<< HEAD
   }
 
   // On Rendering, load all of the Feed of the User
@@ -86,6 +94,22 @@ export default class Home extends Component {
         console.log(error);
       }
     }
+=======
+    const history = this.drone.subscribe("observable-room", {
+      historyCount: 5 // ask for the 5 most recent messages from the room's history
+    });
+    history.on('history_message', ({data}) => {
+      console.log(data);
+    });
+
+    history.on('data', data => {
+      console.log(data);
+    });
+
+
+
+    // history.on("past", message => console.log("message"));
+>>>>>>> e4c51198f075fb767d5aebebf3b89e406229201a
   }
 
   render() {
@@ -133,7 +157,11 @@ export default class Home extends Component {
   }
   onSendMessage = message => {
     this.drone.publish({
+<<<<<<< HEAD
       room: `observable-room-${this.state.activeCardId}`,
+=======
+      room: "observable-room",
+>>>>>>> e4c51198f075fb767d5aebebf3b89e406229201a
       message
     });
   };

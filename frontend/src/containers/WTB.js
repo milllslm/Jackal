@@ -175,3 +175,11 @@ export default class WTB_Card extends Component {
     }
   }
 }
+<<<<<<< HEAD
+=======
+}
+
+
+
+
+>>>>>>> e4c51198f075fb767d5aebebf3b89e406229201a
