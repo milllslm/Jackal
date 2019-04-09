@@ -34,6 +34,33 @@ provider:
 
 functions:
 
+  selectFulfiller:
+    handler: selectFulfiller.main
+    events:
+      - http:
+          path: selectFulfiller/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
+
+  acceptCard:
+    handler: acceptCard.main
+    events:
+      - http:
+          path: acceptCard/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
+
+  completeRequest:
+    handler: completeRequest.main
+    events:
+      - http:
+          path: completeRequest
+          method: post
+          cors: true
+          authorizer: aws_iam
+
   getUserById:
     handler: getUserById.main
     events:
