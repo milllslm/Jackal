@@ -20,20 +20,17 @@ export default class Home extends Component {
       wtbs: [],
       category: "All",
       messages: [],
+      activeCardId: "",
+      room: null,
       member: {
         username: "Anonymous",
         color: randomColor()
       }
     };
-    this.getUser = this.getUser.bind(this);
+    this.activateChat = this.activateChat.bind(this);
+    this.setCategory = this.setCategory.bind(this);
   }
 
-  async getUser(){
-    let user = await API.get("bets", "/getUser");
-    let name = `${user.firstName} ${user.lastName}`;
-    let color = randomColor();
-    return { name: name, color: color };
-  }
 
   // Function updates the Feed to show only requests of a given category
   async setCategory(category) {
@@ -54,6 +51,24 @@ export default class Home extends Component {
     }
   }
 
+  async activateChat(cardId) {
+    if (this.state.activeCardId !== ""){ // not the first room
+      this.setState({messages: []})
+      this.state.room.unsubscribe();
+    }
+
+    this.setState({activeCardId: cardId});
+    const room = this.drone.subscribe(`observable-room-${cardId}`);
+
+    room.on("data", (data, member) => {
+      const messages = this.state.messages;
+      messages.push({ member, text: data });
+      this.setState({ messages });
+    });
+    this.setState({room: room});
+
+  }
+
   // On Rendering, load all of the Feed of the User
   async componentDidMount() {
     let user = await API.get("bets", "/getUser");
@@ -69,7 +84,6 @@ export default class Home extends Component {
       }
     }
 
-
     this.drone = new window.Scaledrone("hT7l8bxuKDH29NMC", {
       data: this.state.member
     });
@@ -81,17 +95,17 @@ export default class Home extends Component {
       member.id = this.drone.clientId;
       this.setState({ member });
     });
-    this.setCategory = this.setCategory.bind(this);
-    const room = this.drone.subscribe("observable-room");
-    room.on("data", (data, member) => {
-      const messages = this.state.messages;
-      messages.push({ member, text: data });
-      this.setState({ messages });
-    });
 
   }
 
   render() {
+    let chat = (this.state.activeCardId === "") ? <div></div> : <div className="App">
+          <Messages
+            messages={this.state.messages}
+            currentMember={this.state.member}
+          />
+          <Input onSendMessage={this.onSendMessage} />
+        </div>;
     return (
       <div>
         <Grid container spacing={8}>
@@ -116,25 +130,20 @@ export default class Home extends Component {
                     data={wtb}
                     key={wtb.betId}
                     setCategory={this.setCategory}
+                    activateChat={this.activateChat}
                   />
                 </Grid>
               ))}
             </Grid>
           </Grid>
         </Grid>
-        <div className="App">
-          <Messages
-            messages={this.state.messages}
-            currentMember={this.state.member}
-          />
-          <Input onSendMessage={this.onSendMessage} />
-        </div>
+        {chat}
       </div>
     );
   }
   onSendMessage = message => {
     this.drone.publish({
-      room: "observable-room",
+      room: `observable-room-${this.state.activeCardId}`,
       message
     });
   };
