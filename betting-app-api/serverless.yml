@@ -34,6 +34,15 @@ provider:
 
 functions:
 
+  returningItem:
+    handler: returningItem.main
+    events:
+      - http:
+          path: returningItem/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
+
   selectFulfiller:
     handler: selectFulfiller.main
     events:
