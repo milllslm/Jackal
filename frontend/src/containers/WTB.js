@@ -38,16 +38,21 @@ const styles = theme => ({
 export default class WTB_Card extends Component {
   constructor(props) {
     super(props);
-    this.delete = this.delete.bind(this);
     this.state = {
       mine: false,
       user: "Loading...",
+      userId: "",
       accepted: false,
+      accepterId: "",
+      timeToReceive: null,
       id: this.props.data.betId
     };
+    this.delete = this.delete.bind(this);
     this.chat = this.chat.bind(this);
     this.accept = this.accept.bind(this);
-  }
+    this.pickFulfiller = this.pickFulfiller.bind(this);
+}
+
   async componentDidMount() {
     let cardUser = await API.get(
       "bets",
@@ -59,6 +64,7 @@ export default class WTB_Card extends Component {
     }
     this.setState({ user: `${cardUser.firstName} ${cardUser.lastName}` });
   }
+
   async delete(event) {
     event.preventDefault();
     let wtb = await API.del("bets", `/bets/${this.props.data.betId}`).then(
@@ -74,15 +80,21 @@ export default class WTB_Card extends Component {
 
   async accept(event) {
     event.preventDefault();
-    let accepted = await API.post("bets", "/completeRequest", {
+    let currentUser = await API.get("bets", "/getUser");
+    let accepted = await API.post("bets", `/acceptCard/${this.props.data.betId}`, {
       body: {
-        betId: this.props.data.betId,
-        balance: this.props.data.rate,
-        otherUserId: this.props.data.userId
+        otherUserId: currentUser.userId
       }
-    })
-      .then(data => console.log(data))
-      .then(data => this.setState({ accepted: false }));
+    }).then(data => console.log(data));
+  }
+
+  async pickFulfiller() {
+    console.log(this.props.data.fulfillerOptions);
+    let accepted = await API.post("bets", `/selectFulfiller/${this.props.data.betId}`, {
+      body: {
+        otherUserId: this.state.accepterId
+      }
+    }).then(data => console.log(data));
   }
 
   render() {
@@ -117,6 +129,16 @@ export default class WTB_Card extends Component {
           Delete
         </Button>
       );
+      let pickButton = (
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={this.pickFulfiller}
+          className={classes.button}
+        >
+          Pick
+        </Button>
+      );
       let acceptButton = (
         <Button
           variant="outlined"
@@ -132,6 +154,7 @@ export default class WTB_Card extends Component {
         <div className={classes.controls}>
           {chatButton}
           {deleteButton}
+          {pickButton}
         </div>
       ) : (
         <div className={classes.controls}>
