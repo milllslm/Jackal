@@ -21,6 +21,7 @@ export async function main(event, context) {
       fulfillerOptions: [],
       fulfillerSelected: false,
       timeReceived: null,
+      returnStatus: 0,
       timeReturned: null,
       createdAt: Date.now()
     }

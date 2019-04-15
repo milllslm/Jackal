@@ -2,7 +2,8 @@
 
 The backend of our web application, implemented using serverless integrated
 with AWS (Cognito, Amplify, S3, API Gateway). This backend is currently used to
-post WTB (Want to Borrow) requests.
+post WTB (Want to Borrow) requests, manage user information, and to facilitate
+transactions between users.
 
 # Key Functionality
 Functions for creating, retrieving, listing, and deleting WTB requests, which
