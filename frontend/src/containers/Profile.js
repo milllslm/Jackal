@@ -204,7 +204,7 @@ class Profile extends React.Component {
             <Tooltip title="Video Games">
               <Fab key={2}
                 aria-label="Video Games"
-                id="Video Games"
+                id="VideoGames"
                 className={classes.fab}
                 onClick={this.handleEvent}
               >
@@ -276,7 +276,7 @@ class Profile extends React.Component {
             <Tooltip title="Food and Drink">
               <Fab key={8}
                 aria-label="Food and Drink"
-                id="Food and Drink"
+                id="FoodandDrinks"
                 className={classes.fab}
                 onClick={this.handleEvent}
               >

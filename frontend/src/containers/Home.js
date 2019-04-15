@@ -6,7 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import UserProfile from "./Profile";
 import Messages from "./Messages";
 import Input from "./Input";
-
+import Item from "./Item.js"
 import "./Home.css";
 
 function randomColor() {
@@ -43,7 +43,6 @@ export default class Home extends Component {
         this.setState({ wtbs: wtbs });
       } catch (err) {
         console.log(err);
-        alert("There are currently no requests in this category.");
         let data = await API.get("bets", "/allWTBs");
         this.setState({ wtbs: data });
       }
@@ -126,7 +125,7 @@ export default class Home extends Component {
               </Grid>
               {this.state.wtbs.map((wtb, i) => (
                 <Grid item key={i} xs={12} sm={12} md={6} lg={4}>
-                  <WTB_Card
+                  <Item
                     data={wtb}
                     key={wtb.betId}
                     setCategory={this.setCategory}
