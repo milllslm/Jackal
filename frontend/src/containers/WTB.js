@@ -8,32 +8,8 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { API } from "aws-amplify";
 
-const styles = theme => ({
-  card: {
-    maxWidth: 300,
-    margin: 10
-  },
-  details: {
-    display: "flex",
-    flexDirection: "column"
-  },
-  content: {
-    flex: "1 0 auto"
-  },
-  controls: {
-    display: "flex",
-    alignItems: "center",
-    paddingLeft: theme.spacing.unit / 2,
-    paddingBottom: theme.spacing.unit / 2
-  },
-  button: {
-    margin: theme.spacing.unit,
-    width: "100%"
-  },
-  input: {
-    display: "none"
-  }
-});
+
+
 
 export default class WTB_Card extends Component {
   constructor(props) {
@@ -118,7 +94,10 @@ export default class WTB_Card extends Component {
         >
           Chat
         </Button>
+
       );
+
+
       let deleteButton = (
         <Button
           variant="outlined"

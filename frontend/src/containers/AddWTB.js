@@ -55,13 +55,38 @@ class AddWantToBuy extends Component {
 			rateQualifier: "",
 			maxDuration: "",
 			likeThisLink: "N/A",
-			expiration: null
+			expiration: null,
+			defaultExpiration: null
 		};
 		this.onSubmit = this.onSubmit.bind(this);
 		this.onChange = this.onChange.bind(this);
 		this.handleClickOpen = this.handleClickOpen.bind(this);
 		this.handleClickClose = this.handleClickClose.bind(this);
 		this.changeCategory = this.changeCategory.bind(this);
+		this.changeRateQualifier= this.changeRateQualifier.bind(this);
+	}
+
+	componentDidMount() {
+		// format = 2019-03-01T10:30
+		let date = new Date();
+		date.setDate(date.getDate()+7);
+		let month = date.getMonth();
+		if (month < 10)
+			month = `0${month}`
+			console.log(month)
+		let day = date.getDate();
+		if (day < 10)
+			day = `0${day}`
+		let hour = date.getHours();
+		if (hour < 10)
+			hour = `0${hour}`
+		let minutes = date.getMinutes();
+		if (minutes < 10)
+			minutes = `0${minutes}`	
+		let dateString = `${date.getFullYear()}-${month}-${day}T${hour}:${minutes}`
+		this.setState({defaultExpiration: dateString});
+		console.log(dateString)
+
 	}
 	async onSubmit() {
 		if (this.state.likeThisLink === "")
@@ -79,6 +104,11 @@ class AddWantToBuy extends Component {
 	changeCategory(ev){
 		console.log(ev.target);
 		this.setState({category: ev.target.value});
+	}
+
+	changeRateQualifier(ev){
+		console.log(ev.target);
+		this.setState({rateQualifier: ev.target.value});
 	}
 
 	handleClickOpen() {
@@ -127,10 +157,26 @@ class AddWantToBuy extends Component {
 							type="Rate to rent at"
 							fullWidth
 						/>
+						<FormControl style={{minWidth: 500}}>
+          				<InputLabel htmlFor="rateQualifier">Per</InputLabel>
+						<Select
+							value={this.state.rateQualifier}
+							onChange={this.changeRateQualifier}
+							inputProps={{
+								name: "rateQualifier",
+								id: "rateQualifier"
+							}}
+						>
+							<MenuItem value="Hour">
+								<em>Hour</em>
+							</MenuItem>
+							<MenuItem value="Day">Day</MenuItem>
+						</Select>
+						</FormControl>
 						<TextField
 							onChange={this.onChange}
-							id="rateQualifier"
-							label="Hour or Day?"
+							id="maxDuration"
+							label="How long do you need the item?"
 							type="text"
 							fullWidth
 						/>
@@ -148,30 +194,21 @@ class AddWantToBuy extends Component {
 								<em>None</em>
 							</MenuItem>
 							<MenuItem value="Sports">Sports</MenuItem>
-							<MenuItem value="Video Games">Video Games</MenuItem>
+							<MenuItem value="VideoGames">Video Games</MenuItem>
+							<MenuItem value="Electronics">Electronics</MenuItem>
+							<MenuItem value="Apparel">Apparel</MenuItem>
+							<MenuItem value="Accessories">Accessories</MenuItem>
+							<MenuItem value="Transportation">Transportation</MenuItem>
 							<MenuItem value="Outdoors">Outdoors</MenuItem>
+							<MenuItem value="FoodandDrinks">Food and Drinks</MenuItem>
 						</Select>
 						</FormControl>
-						<TextField
-							onChange={this.onChange}
-							id="maxDuration"
-							label="What is the maximum time you would need this for?"
-							type="text"
-							fullWidth
-						/>
-						<TextField
-							onChange={this.onChange}
-							id="likeThisLink"
-							label="Link to similiar item (optional)"
-							type="text"
-							fullWidth
-						/>
 						<TextField
 							onChange={this.onChange}
 							id="expiration"
 							label="Date Needed By"
 							type="datetime-local"
-							defaultValue="2019-03-01T10:30"
+							defaultValue={this.state.defaultExpiration}
 							InputLabelProps={{
 								shrink: true
 							}}
