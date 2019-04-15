@@ -158,17 +158,13 @@ class Item extends Component {
 	}
 
 	async pickFulfiller(ev) {
-		ev.preventDefault();
-		let userId = ev.target.id;
-		console.log(userId);
 		let date = new Date();
-		console.log(this.props.data.fulfillerOptions);
 		let accepted = await API.put(
 			"bets",
 			`/selectFulfiller/${this.props.data.betId}`,
 			{
 				body: {
-					otherUserId: userId,
+					otherUserId: ev.target.id,
 					timeToReceive: date
 				}
 			}
@@ -228,7 +224,7 @@ class Item extends Component {
 					balance: this.props.data.rate
 				}
 			}
-		).then(data => console.log(data));
+		).then(data => this.isVisible());
 	}
 
 
@@ -239,7 +235,7 @@ class Item extends Component {
 		const { classes } = this.props;
 		let potentialFulfillers = 
 		this.props.data.fulfillerOptions.map((fulfiller, i) => {
-
+			console.log(fulfiller)
 		return(
 		<MuiThemeProvider theme={greenTheme}>
 			<Button variant="outlined" color="primary" key={i} id={fulfiller} onClick={this.pickFulfiller} className={classes.button}>{this.state.fulfillerNames[i]}</Button>
@@ -267,7 +263,7 @@ class Item extends Component {
         			<Button variant="outlined" color="primary" disabled={this.props.data.returnStatus!==0} onClick={this.returnItem} className={classes.button}>Returned</Button>
       				</MuiThemeProvider>;
       	let returnButtonLender = <MuiThemeProvider theme={redTheme}>
-        			<Button variant="outlined" color="primary" disabled={ (this.state.mine && this.props.data.returnStatus!==1) } onClick={this.completeRequest} className={classes.button}>Returned</Button>
+        			<Button variant="outlined" color="primary" disabled={this.props.data.returnStatus!==1} onClick={this.completeRequest} className={classes.button}>Returned</Button>
       				</MuiThemeProvider>;
 
       	if (this.state.mine) {
@@ -339,10 +335,13 @@ class Item extends Component {
  
         	<div key="back">
         	<Card className={classes.card}>
+        	<CardContent>
      		<Grid container spacing={16}>
+     			<Grid item xs={12}><Typography variant="h4">Select a Fulfiller</Typography></Grid>
      			{potentialFulfillers}
      			{backButton}
           	</Grid>
+          	</CardContent>
           	</Card>
         	</div>
       	</ReactCardFlip>
