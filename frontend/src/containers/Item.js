@@ -14,9 +14,6 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Icon from '@material-ui/core/Icon';
-import CardMedia from '@material-ui/core/CardMedia';
-import Divider from '@material-ui/core/Divider';
-import Avatar from '@material-ui/core/Avatar';
 
 import sports from './images/sports.jpg';
 import VideoGames from './images/VideoGames.jpg';
@@ -27,10 +24,6 @@ import Transportation from './images/Transportation.jpg';
 import Outdoors from './images/Outdoors.jpg';
 import FoodandDrinks from './images/FoodandDrinks.jpg';
 
-
-import NavigationIcon from '@material-ui/icons/Navigation';
-import ForumIcon from '@material-ui/icons/Forum';
-import DoneIcon from '@material-ui/icons/Done';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import { red, blue, green, purple } from '@material-ui/core/colors'
 
@@ -83,6 +76,8 @@ class Item extends Component {
 			mine: false,
 			user: "Loading...",
 			userId: "",
+			fulfillerNames: [],
+			fulfilling: false,
 			accepted: false,
 			accepterId: "",
 			timeToReceive: null,
@@ -94,6 +89,10 @@ class Item extends Component {
 		this.accept = this.accept.bind(this);
 		this.pickFulfiller = this.pickFulfiller.bind(this);
 		this.getImageByCategory = this.getImageByCategory.bind(this);
+		this.getFulfillers = this.getFulfillers.bind(this);
+		this.isVisible = this.isVisible.bind(this);
+		this.returnItem = this.returnItem.bind(this);
+		this.completeRequest = this.completeRequest.bind(this);
 	}
 	rotate(e) {
 		e.preventDefault();
@@ -110,7 +109,22 @@ class Item extends Component {
 			this.setState({ mine: true });
 		}
 		this.setState({ user: `${cardUser.firstName} ${cardUser.lastName}` });
+		await this.getFulfillers();
+		await this.isVisible(currentUser);
 	}
+
+	async isVisible(currentUser) {
+		if (this.props.data.returnStatus === 2)
+			this.setState({accepted: true});
+		if (this.props.data.fulfillerSelected){
+			if (!this.state.mine && currentUser.userId !== this.props.data.fulfillerOptions[0])
+					this.setState({accepted: true});
+			else {
+				this.setState({fulfilling: true});
+			}
+		}
+	}
+	
 
 	async delete(event) {
 		event.preventDefault();
@@ -127,26 +141,35 @@ class Item extends Component {
 
 	async accept(event) {
 		event.preventDefault();
+		if (this.props.data.fulfillerSelected){
+			if (!this.state.mine || this.state.userId !== this.props.data.fulfillerOptions[0])
+				return this.setState({accepted: true});
+		}
 		let currentUser = await API.get("bets", "/getUser");
-		let accepted = await API.post(
+		let accepted = await API.put(
 			"bets",
 			`/acceptCard/${this.props.data.betId}`,
 			{
 				body: {
-					otherUserId: currentUser.userId
+					otherUserId: this.props.data.userId
 				}
 			}
 		).then(data => console.log(data));
 	}
 
-	async pickFulfiller() {
+	async pickFulfiller(ev) {
+		ev.preventDefault();
+		let userId = ev.target.id;
+		console.log(userId);
+		let date = new Date();
 		console.log(this.props.data.fulfillerOptions);
-		let accepted = await API.post(
+		let accepted = await API.put(
 			"bets",
 			`/selectFulfiller/${this.props.data.betId}`,
 			{
 				body: {
-					otherUserId: this.state.accepterId
+					otherUserId: userId,
+					timeToReceive: date
 				}
 			}
 		).then(data => console.log(data));
@@ -174,8 +197,54 @@ class Item extends Component {
 			return <div></div>;
 	}
 
+	async getFulfillers() {
+		const { classes } = this.props;
+		let items = [];
+		if (this.state.mine) {
+			let data = await Promise.all(this.props.data.fulfillerOptions.map((fulfiller, i) => {
+			let fulfillerUser = API.get(
+				"bets",
+				`/getUserById/${fulfiller}`
+			).then(user => `${user.firstName} ${user.lastName}`).then(name => items.push(name));
+		}));
+		this.setState({fulfillerNames: items});
+		}
+	};
+
+	async returnItem(){
+		let accepted = await API.put(
+			"bets",
+			`/returningItem/${this.props.data.betId}`
+		).then(data => console.log(data));
+	}
+
+	async completeRequest(){
+		let accepted = await API.put(
+			"bets",
+			`/completeRequest/${this.props.data.betId}`,
+			{
+				body: {
+					otherUserId: this.props.data.userId,
+					balance: this.props.data.rate
+				}
+			}
+		).then(data => console.log(data));
+	}
+
+
+
+
+
 	render() {
 		const { classes } = this.props;
+		let potentialFulfillers = 
+		this.props.data.fulfillerOptions.map((fulfiller, i) => {
+
+		return(
+		<MuiThemeProvider theme={greenTheme}>
+			<Button variant="outlined" color="primary" key={i} id={fulfiller} onClick={this.pickFulfiller} className={classes.button}>{this.state.fulfillerNames[i]}</Button>
+		</MuiThemeProvider>);
+		});
 		let button1 = null;
 		let button2 = null;
 		let button3 = null;
@@ -189,21 +258,44 @@ class Item extends Component {
         			<Button variant="outlined" color="primary" onClick={this.delete} className={classes.button}>Delete</Button>
       				</MuiThemeProvider>;
       	let chooseButton = <MuiThemeProvider theme={greenTheme}>
-        			<Button variant="outlined" color="primary" onClick={this.pickFulfiller} className={classes.button}>Choose</Button>
-      				</MuiThemeProvider>;			
+        			<Button variant="outlined" color="primary" onClick={this.rotate} className={classes.button}>Choose</Button>
+      				</MuiThemeProvider>;
+      	let backButton = <MuiThemeProvider theme={redTheme}>
+        			<Button variant="outlined" color="primary" onClick={this.rotate} className={classes.button}>Back</Button>
+      				</MuiThemeProvider>;
+      	let returnButtonBorrower = <MuiThemeProvider theme={redTheme}>
+        			<Button variant="outlined" color="primary" disabled={this.props.data.returnStatus!==0} onClick={this.returnItem} className={classes.button}>Returned</Button>
+      				</MuiThemeProvider>;
+      	let returnButtonLender = <MuiThemeProvider theme={redTheme}>
+        			<Button variant="outlined" color="primary" disabled={ (this.state.mine && this.props.data.returnStatus!==1) } onClick={this.completeRequest} className={classes.button}>Returned</Button>
+      				</MuiThemeProvider>;
+
       	if (this.state.mine) {
-      		button1 = deleteButton;
-      		button2 = chatButton;
-      		button3 = chooseButton;
+      		if (this.state.fulfilling){
+      			button1 = returnButtonBorrower;
+      			button2 = chatButton;
+      			button3 = <div></div>;
+      		} else {
+      			button1 = deleteButton;
+      			button2 = chatButton;
+      			button3 = chooseButton;
+      		}
       	} else {
-      		button3 = <div></div>
-      		button1 = chatButton;
-      		button2 = acceptButton;
+      		if (this.state.fulfilling){
+      			button1 = returnButtonLender;
+      			button2 = chatButton;
+      			button3 = <div></div>;
+      		} else {
+      			button3 = <div></div>
+      			button1 = chatButton;
+      			button2 = acceptButton;
+      		}
       	}
       	let image = this.getImageByCategory();
 
 		if (this.state.accepted) 
 			return(<div></div>);
+
 		return (
 		<ReactCardFlip isFlipped={this.state.isFlipped} flipDirection="vertical">
         	<Card key="front" className={classes.card} > 
@@ -246,8 +338,12 @@ class Item extends Component {
         	</Card>
  
         	<div key="back">
-          	This is the back of the card.
-          	<button onClick={this.rotate}>Click to flip</button>
+        	<Card className={classes.card}>
+     		<Grid container spacing={16}>
+     			{potentialFulfillers}
+     			{backButton}
+          	</Grid>
+          	</Card>
         	</div>
       	</ReactCardFlip>
       	);
