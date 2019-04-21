@@ -19,6 +19,7 @@ import FoodandDrinks from './images/FoodandDrinks.jpg';
 import DateFnsUtils from "@date-io/date-fns";
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import { red, blue, green } from '@material-ui/core/colors'
+import io from 'socket.io-client';
 
 const purpleTheme = createMuiTheme({ palette: { primary: blue } })
 const greenTheme = createMuiTheme({ palette: { primary: green } })
@@ -229,7 +230,7 @@ class Item extends Component {
 	}
 
 	async selectPickupTime(data) {
-		await this.setState({pickupTime: data});
+		await this.setState({pickupTime: data, error: null});
 		console.log(this.state.pickupTime)
 	}
 
@@ -350,6 +351,7 @@ class Item extends Component {
         	<CardContent>
      		<Grid container spacing={16}>
      			<Grid item xs={12}><Typography variant="h4">Select a Fulfiller</Typography></Grid>
+     			<p style={{color: "red"}}>{this.state.error}</p>
      			{potentialFulfillers}
      			{pickUpTimeWidget}
      			{backButton}

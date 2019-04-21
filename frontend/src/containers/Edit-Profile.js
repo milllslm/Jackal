@@ -17,7 +17,6 @@ import FormControl from "@material-ui/core/FormControl";
 
 
 // accept card: betId as path, other user id as data field
-// 
 
 const styles = theme => ({
 	container: {
