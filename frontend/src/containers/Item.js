@@ -1,20 +1,13 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
+import React, { Component} from "react";
 import { withStyles } from "@material-ui/core/styles";
-import classnames from 'classnames';
 import Button from "@material-ui/core/Button";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
 import ReactCardFlip from "react-card-flip";
 import Typography from '@material-ui/core/Typography';
 import { API } from "aws-amplify";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
-import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Icon from '@material-ui/core/Icon';
-
+import { TimePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
 import sports from './images/sports.jpg';
 import VideoGames from './images/VideoGames.jpg';
 import Electronics from './images/Electronics.jpg';
@@ -23,9 +16,9 @@ import Accessories from './images/Accessories.jpg';
 import Transportation from './images/Transportation.jpg';
 import Outdoors from './images/Outdoors.jpg';
 import FoodandDrinks from './images/FoodandDrinks.jpg';
-
+import DateFnsUtils from "@date-io/date-fns";
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
-import { red, blue, green, purple } from '@material-ui/core/colors'
+import { red, blue, green } from '@material-ui/core/colors'
 
 const purpleTheme = createMuiTheme({ palette: { primary: blue } })
 const greenTheme = createMuiTheme({ palette: { primary: green } })
@@ -81,6 +74,7 @@ class Item extends Component {
 			accepted: false,
 			accepterId: "",
 			timeToReceive: null,
+			pickupTime: null,
 			id: this.props.data.betId
 		};
 		this.delete = this.delete.bind(this);
@@ -93,6 +87,7 @@ class Item extends Component {
 		this.isVisible = this.isVisible.bind(this);
 		this.returnItem = this.returnItem.bind(this);
 		this.completeRequest = this.completeRequest.bind(this);
+		this.selectPickupTime = this.selectPickupTime.bind(this);
 	}
 	rotate(e) {
 		e.preventDefault();
@@ -117,6 +112,8 @@ class Item extends Component {
 		if (this.props.data.returnStatus === 2)
 			this.setState({accepted: true});
 		if (this.props.data.fulfillerSelected){
+			if (this.state === null)
+				return false;
 			if (!this.state.mine && currentUser.userId !== this.props.data.fulfillerOptions[0])
 					this.setState({accepted: true});
 			else {
@@ -130,7 +127,7 @@ class Item extends Component {
 		event.preventDefault();
 		let wtb = await API.del("bets", `/bets/${this.props.data.betId}`).then(
 			response => console.log(response)
-		);
+		).then(wtb => console.log(wtb));
 		await this.props.setCategory("All");
 	}
 
@@ -158,17 +155,21 @@ class Item extends Component {
 	}
 
 	async pickFulfiller(ev) {
-		let date = new Date();
-		let accepted = await API.put(
+		if (this.state.pickupTime === null){
+			this.setState({error: "Please put in the agreed pickup time."})
+		} else {
+			let date = this.state.pickupTime;
+			let accepted = await API.put(
 			"bets",
 			`/selectFulfiller/${this.props.data.betId}`,
 			{
 				body: {
-					otherUserId: ev.target.id,
+					otherUserId: ev.currentTarget.id,
 					timeToReceive: date
 				}
 			}
-		).then(data => console.log(data));
+		).then(data => console.log(data)).then(this.setState({isFlipped: false}));
+		}
 	}
 
 	getImageByCategory() {
@@ -224,10 +225,13 @@ class Item extends Component {
 					balance: this.props.data.rate
 				}
 			}
-		).then(data => this.isVisible());
+		);
 	}
 
-
+	async selectPickupTime(data) {
+		await this.setState({pickupTime: data});
+		console.log(this.state.pickupTime)
+	}
 
 
 
@@ -235,10 +239,9 @@ class Item extends Component {
 		const { classes } = this.props;
 		let potentialFulfillers = 
 		this.props.data.fulfillerOptions.map((fulfiller, i) => {
-			console.log(fulfiller)
 		return(
-		<MuiThemeProvider theme={greenTheme}>
-			<Button variant="outlined" color="primary" key={i} id={fulfiller} onClick={this.pickFulfiller} className={classes.button}>{this.state.fulfillerNames[i]}</Button>
+		<MuiThemeProvider key={i} theme={greenTheme}>
+			<Button variant="outlined" color="primary" key={i} children={null} id={fulfiller} onClick={this.pickFulfiller} className={classes.button}>{this.state.fulfillerNames[i]}</Button>
 		</MuiThemeProvider>);
 		});
 		let button1 = null;
@@ -265,7 +268,8 @@ class Item extends Component {
       	let returnButtonLender = <MuiThemeProvider theme={redTheme}>
         			<Button variant="outlined" color="primary" disabled={this.props.data.returnStatus!==1} onClick={this.completeRequest} className={classes.button}>Returned</Button>
       				</MuiThemeProvider>;
-
+      	let fulfillerString = (this.props.data.fulfillerSelected) ? <Typography variant="h6" color="textSecondary" gutterBottom>{`Currently being fulfilled`}</Typography> :
+        			<Typography variant="h6" color="textSecondary" gutterBottom>{`Requested by: ${this.state.user}`}</Typography>;
       	if (this.state.mine) {
       		if (this.state.fulfilling){
       			button1 = returnButtonBorrower;
@@ -292,6 +296,15 @@ class Item extends Component {
 		if (this.state.accepted) 
 			return(<div></div>);
 
+		let pickUpTimeWidget = (this.props.data.potentialFulfillers !== null) ? 
+			<div>
+				<h4>Select Pickup Time</h4>
+				<MuiPickersUtilsProvider utils={DateFnsUtils}>
+				<TimePicker value={this.state.pickupTime} onChange={this.selectPickupTime} /> 
+				</MuiPickersUtilsProvider>
+			</div> : <div></div>
+
+
 		return (
 		<ReactCardFlip isFlipped={this.state.isFlipped} flipDirection="vertical">
         	<Card key="front" className={classes.card} > 
@@ -300,8 +313,7 @@ class Item extends Component {
         	<Grid container spacing={16}>
         		<Grid item xs={8}>
         			<Typography variant="h4">{this.props.data.title}</Typography>
-        			<Typography variant="h6" color="textSecondary" gutterBottom>Requested by: {this.state.user}</Typography>
-      
+					{fulfillerString}      
         			<Typography component="h6" variant="h6" gutterBottom>{this.props.data.description}</Typography>
 				</Grid>
         		<Grid item xs={4}>
@@ -311,7 +323,7 @@ class Item extends Component {
 
         	<Grid container spacing={8}>
         		<Grid item xs={6}>
-        			<Typography variant="p" >Rate: ${this.props.data.rate} per {this.props.data.rateQualifier}</Typography>
+        			<Typography variant="h5" >Rate: ${this.props.data.rate} per {this.props.data.rateQualifier}</Typography>
         		</Grid>
         		<Grid item xs={6}>
         			<Typography variant="subtitle1" >Needed for: {this.props.data.maxDuration}</Typography>
@@ -339,6 +351,7 @@ class Item extends Component {
      		<Grid container spacing={16}>
      			<Grid item xs={12}><Typography variant="h4">Select a Fulfiller</Typography></Grid>
      			{potentialFulfillers}
+     			{pickUpTimeWidget}
      			{backButton}
           	</Grid>
           	</CardContent>

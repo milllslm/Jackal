@@ -1,12 +1,9 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Switch } from "react-router-dom";
 import Home from "./containers/Home";
 import Login from "./containers/Login";
-import WTB_Card from "./containers/WTB";
-import ProfileCard from "./containers/Profile"
 import Signup from "./containers/Signup";
 import AppliedRoute from "./containers/AppliedRoute";
-import IconAvatars from "./containers/AppliedRoute";
 
 
 

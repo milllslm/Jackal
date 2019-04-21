@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { API } from "aws-amplify";
-import { Auth } from "aws-amplify";
-import WTB_Card from "./WTB.js";
 import Grid from "@material-ui/core/Grid";
 import UserProfile from "./Profile";
 import Messages from "./Messages";

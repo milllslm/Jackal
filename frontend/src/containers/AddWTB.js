@@ -1,25 +1,18 @@
 
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
-import Icon from "@material-ui/core/Icon";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import { API } from "aws-amplify";
 import Select from "@material-ui/core/Select";
-import Input from "@material-ui/core/Input";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import FilledInput from "@material-ui/core/FilledInput";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 
 
@@ -56,7 +49,8 @@ class AddWantToBuy extends Component {
 			maxDuration: "",
 			likeThisLink: "N/A",
 			expiration: null,
-			defaultExpiration: null
+			defaultExpiration: null,
+			error: null
 		};
 		this.onSubmit = this.onSubmit.bind(this);
 		this.onChange = this.onChange.bind(this);
@@ -70,10 +64,9 @@ class AddWantToBuy extends Component {
 		// format = 2019-03-01T10:30
 		let date = new Date();
 		date.setDate(date.getDate()+7);
-		let month = date.getMonth();
+		let month = date.getMonth()+1;
 		if (month < 10)
 			month = `0${month}`
-			console.log(month)
 		let day = date.getDate();
 		if (day < 10)
 			day = `0${day}`
@@ -85,7 +78,6 @@ class AddWantToBuy extends Component {
 			minutes = `0${minutes}`	
 		let dateString = `${date.getFullYear()}-${month}-${day}T${hour}:${minutes}`
 		this.setState({defaultExpiration: dateString});
-		console.log(dateString)
 
 	}
 	async onSubmit() {
@@ -99,6 +91,20 @@ class AddWantToBuy extends Component {
 	}
 	onChange(ev) {
 		this.setState({ [ev.target.id]: ev.target.value });
+		let maxLength = 1000;
+		if (ev.target.id === "title"){
+			maxLength = 16;
+		} else if (ev.target.id === "description"){
+			maxLength = 100;
+		} else if (ev.target.id === "maxDuration"){
+			maxLength = 16;
+		}
+		if (this.state[ev.target.id].length > maxLength){
+			this.setState({error: `${ev.target.id} must be less than ${maxLength} characters.`});
+		} else {
+			this.setState({error: null});
+		}
+
 	}
 
 	changeCategory(ev){
@@ -120,7 +126,9 @@ class AddWantToBuy extends Component {
 	}
 
 	render() {
-		const fields = ["title"];
+		let submitButton = (this.state.error === null) ? <Button onClick={this.onSubmit} color="primary">Submit</Button> :
+			<Button onClick={this.onSubmit} color="primary" disabled>Submit</Button>
+		let title = (this.state.error === null) ? "Place a new request" : <div style={{color: "red"}}>{this.state.error}</div>;
 		return (
 			<div>
 				<Dialog
@@ -130,7 +138,7 @@ class AddWantToBuy extends Component {
 					fullWidth
 				>
 					<DialogTitle id="max-width-dialog-title">
-						Place a new request
+						{title}
 					</DialogTitle>
 					<DialogContent>
 						<TextField
@@ -146,6 +154,7 @@ class AddWantToBuy extends Component {
 						<TextField
 							onChange={this.onChange}
 							id="description"
+							maxLength="100"
 							label="Description"
 							type="email"
 							fullWidth
@@ -153,8 +162,8 @@ class AddWantToBuy extends Component {
 						<TextField
 							onChange={this.onChange}
 							id="rate"
-							label="Rate"
-							type="Rate to rent at"
+							label="Rate (Dollars)"
+							type="Number"
 							fullWidth
 						/>
 						<FormControl style={{minWidth: 500}}>
@@ -218,9 +227,7 @@ class AddWantToBuy extends Component {
 						<Button onClick={this.handleClickClose} color="primary">
 							Cancel
 						</Button>
-						<Button onClick={this.onSubmit} color="primary">
-							Submit
-						</Button>
+						{submitButton}
 					</DialogActions>
 				</Dialog>
 				<Fab

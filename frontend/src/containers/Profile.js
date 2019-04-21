@@ -1,33 +1,22 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import classnames from "classnames";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
-import Collapse from "@material-ui/core/Collapse";
 import Avatar from "@material-ui/core/Avatar";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import ShareIcon from "@material-ui/icons/Share";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import AddIcon from "@material-ui/icons/Add";
 import Fab from "@material-ui/core/Fab";
 import AddWantToBuy from "./AddWTB";
-import Paper from "@material-ui/core/Paper";
+import EditProfile from "./Edit-Profile";
+
 import { IoMdTrophy } from "react-icons/io";
 import { IoLogoGameControllerB } from "react-icons/io";
-import { IoIosPower } from "react-icons/io";
 import { IoMdShirt } from "react-icons/io";
 import { IoIosUmbrella } from "react-icons/io";
 import { FaPiedPiperHat } from "react-icons/fa";
-import Icon from "@material-ui/core/Icon";
 import { IoIosCar } from "react-icons/io";
 import { MdRestaurant } from "react-icons/md";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -79,19 +68,14 @@ class Profile extends React.Component {
   }
 
   async editProfile() {
-    // let edit = await API.put("bets", "/updateUserProfile", {
-    //   body: {firstName: "Josh",
-    //         lastName: "Stafford",
-    //         icon: "blue"}
-    // });
-    // console.log("Updated Profile")
+    
   }
 
   handleEvent(ev) {
     ev.preventDefault();
     console.log("Button Clicked:")
-    console.log(ev.target);
-    let category = ev.target.id;
+    console.log(ev.currentTarget);
+    let category = ev.currentTarget.id;
     this.props.setCategory(category);
   }
 
@@ -133,35 +117,7 @@ class Profile extends React.Component {
         <div style={{ textAlign: "center" }}>
           <CardContent>
             <Grid>
-              <Button
-                key={4}
-                variant="outlined"
-                className={classes.margin}
-                size="large"
-                onClick={this.editProfile}
-              >
-                Profile
-              </Button>
-            </Grid>
-            <Grid>
-              <Button
-                key={5}
-                variant="outlined"
-                className={classes.margin}
-                size="large"
-              >
-                Transactions
-              </Button>
-            </Grid>
-            <Grid>
-              <Button
-                key={6}
-                variant="outlined"
-                className={classes.margin}
-                size="large"
-              >
-                Settings
-              </Button>
+              <EditProfile user={this.state.user} />
             </Grid>
           </CardContent>
         </div>

@@ -22,6 +22,8 @@ export default class Signup extends Component {
       confirmPassword: "",
       confirmationCode: "",
       newUser: null,
+      firstName: "",
+      lastName: ""
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -93,8 +95,8 @@ handleConfirmationSubmit = async event => {
       body: {
         username: this.state.username,
         email: this.state.email,
-        firstName: "Josh",
-        lastName: "Stafford",
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
         college: "Vanderbilt",
         icon: "Nothing"
       }
@@ -141,6 +143,25 @@ handleConfirmationSubmit = async event => {
             autoFocus
             type="email"
             value={this.state.email}
+            onChange={this.handleChange}
+          />
+           </FormGroup>
+          <FormGroup controlId="email" bsSize="large">
+          <ControlLabel>First Name</ControlLabel>
+          <FormControl
+            autoFocus
+            type="text"
+            value={this.state.firstName}
+            onChange={this.handleChange}
+          />
+           </FormGroup>
+
+          <FormGroup controlId="email" bsSize="large">
+          <ControlLabel>Last Name</ControlLabel>
+          <FormControl
+            autoFocus
+            type="text"
+            value={this.state.lastName}
             onChange={this.handleChange}
           />
         </FormGroup>
