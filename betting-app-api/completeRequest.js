@@ -10,7 +10,7 @@ export async function main(event, context) {
     // - 'userId': Identity Pool identity id of the authenticated user
     Key: {
       userId: data.otherUserId, //original card poster
-      betId: data.betId
+      betId: event.pathParameters.id,
     }
   };
   //second call: modify balance
@@ -63,9 +63,9 @@ export async function main(event, context) {
     },
     // 'UpdateExpression' defines the attributes to be updated
     // 'ExpressionAttributeValues' defines the value in the update expression
-    UpdateExpression: "SET returningStatus = :returningStatus",
+    UpdateExpression: "SET returnStatus = :returnStatus",
     ExpressionAttributeValues: {
-      ":returningStatus": 2,
+      ":returnStatus": 2,
     },
     // 'ReturnValues' specifies if and how to return the item's attributes,
     // where ALL_NEW returns all attributes of the item after the update; you
@@ -84,7 +84,7 @@ export async function main(event, context) {
     const result = await dynamoDbLib.call("delete", params);
     const result2 = await dynamoDbLib.call("update", params2);
     const results3 = await dynamoDbLib.call("update", params3);
-    const results4 = await dynamoDbLib.call("update", params4);
+    //const results4 = await dynamoDbLib.call("update", params4);
     return success(result);
   } catch (e) {
     return failure({ status: e });

@@ -65,8 +65,8 @@ functions:
     handler: completeRequest.main
     events:
       - http:
-          path: completeRequest
-          method: post
+          path: completeRequest/{id}
+          method: put
           cors: true
           authorizer: aws_iam
 
