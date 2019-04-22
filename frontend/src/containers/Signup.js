@@ -146,7 +146,7 @@ handleConfirmationSubmit = async event => {
             onChange={this.handleChange}
           />
            </FormGroup>
-          <FormGroup controlId="email" bsSize="large">
+          <FormGroup controlId="firstName" bsSize="large">
           <ControlLabel>First Name</ControlLabel>
           <FormControl
             autoFocus
@@ -156,7 +156,7 @@ handleConfirmationSubmit = async event => {
           />
            </FormGroup>
 
-          <FormGroup controlId="email" bsSize="large">
+          <FormGroup controlId="lastName" bsSize="large">
           <ControlLabel>Last Name</ControlLabel>
           <FormControl
             autoFocus
