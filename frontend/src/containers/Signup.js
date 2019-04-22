@@ -51,7 +51,7 @@ export default class Signup extends Component {
     return this.state.confirmationCode.length > 0;
   }
 
-  handleChange = event => {
+  handleChange(event){
     this.setState({
       [event.target.id]: event.target.value
     });
